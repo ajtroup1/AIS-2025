@@ -1,5 +1,7 @@
 # Data
 
+This document is on verion `1.1`
+
 This file is responsible for representing the data structures used in ____. Below are the [Entity Relationship Diagram](#entity-relations) and the [Class Diagram](#class-diagram)
 
 *Rendered with [Mermaid](https://mermaid.js.org/)*
