@@ -41,3 +41,7 @@ class Resume(models.Model):
             latest_resume = Resume.objects.filter(user=self.user).order_by("-version").first()
             self.version = (latest_resume.version + 1) if latest_resume else 1
         super().save(*args, **kwargs)
+
+class Experience(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="experiences")
+    title = models.CharField(max_length=200)
