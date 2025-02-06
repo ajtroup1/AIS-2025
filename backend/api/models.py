@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Job listing model tracks a position that is applied to by the user
+# Application is a job application that the user applied to
 # Stores the status of the application as well as information about the position
 class JobListing(models.Model):
     class Status(models.TextChoices):
