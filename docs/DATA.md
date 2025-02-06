@@ -36,7 +36,6 @@ erDiagram
     RES_EXP {
         INT resume_id NOT NULL FK
         INT experience_id NOT NULL FK
-        PK(resume_id, experience_id)
     }
     APPLICATION {
         INT app_id NOT NULL PK
