@@ -17,6 +17,7 @@ erDiagram
     }
     EXPERIENCE{
         INT experience_id NOT NULL PK
+        VARCHAR job_title NOT NULL
         VARCHAR company NOT NULL
         ENUM job_type NOT NULL
         DATE from_date NOT NULL
@@ -77,6 +78,7 @@ classDiagram
 
     class EXPERIENCE {
         +INT experience_id PK
+        +VARCHAR job_title
         +VARCHAR company
         +ENUM job_type
         +DATE from_date
