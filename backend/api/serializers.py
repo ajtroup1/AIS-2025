@@ -2,8 +2,9 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
-from .models import JobListing
+from .models import *
 
+# Register User
 class RegisterSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         min_length=3,
@@ -53,17 +54,39 @@ class RegisterSerializer(serializers.ModelSerializer):
         validated_data["password"] = make_password(validated_data["password"])
         return super().create(validated_data)
 
-class JobListingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = JobListing
-        fields = "__all__"
-      
+# Base Serializer
+class BaseSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context['request'].user
         validated_data['user'] = user
         return super().create(validated_data)
+    
     def update(self, instance, validated_data):
         for key, value in validated_data.items():
             setattr(instance, key, value)
         instance.save()
         return instance
+
+# Resume
+class ResumeSerializer (BaseSerializer):
+        class Meta:
+            model = Resume
+            fields = "__all__"
+    
+# Experience
+class ExperienceSerializer(BaseSerializer):
+    class Meta:
+        model = Experience
+        fields = "__all__"
+
+# ResExp
+class ResExpSerializer(BaseSerializer):
+    class Meta:
+        model = ResExp
+        fields = "__all__"
+
+# Application
+class ApplicationSerializer(BaseSerializer):
+    class Meta:
+        model = Application
+        fields = "__all__"

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from .serializers import RegisterSerializer, JobListingSerializer
+from .serializers import *
 from .models import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
@@ -83,38 +83,119 @@ class RefreshTokenView(APIView):
         except Exception:
             return Response({"error": "Invalid refresh token"}, status=status.HTTP_401_UNAUTHORIZED)
         
-# JOB LISTINGS
-class GetJobListings(APIView):
-    # Ensure user is authenticated
-    permission_classes = [IsAuthenticated]
+# RESUMES
+# class GetAllResumes(APIView):
+#     # Ensure user is authenticated
+#     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        job_listings = JobListing.objects.filter(user=request.user)
-        serializer = JobListingSerializer(job_listings, many=True)
-        return Response(serializer.data)
+#     def get(self, request):
+#         # Retrieve all resumes associated with the authenticated user
+#         resumes = Resume.objects.filter(user=request.user)
 
-class CreateJobListing(APIView):
-    # Ensure user is authenticated
-    permission_classes = [IsAuthenticated]
+#         # Serialize the resumes data
+#         serializer = ResumeSerializer(resumes, many=True)
 
-    def post(self, request):
-        serializer = JobListingSerializer(data=request.data, context={"request": request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         # Return the serialized resume data as response
+#         return Response(serializer.data)
 
-class UpdateJobListing(APIView):
-    # Ensure user is authenticated
-    permission_classes = [IsAuthenticated]
 
-    def put(self, request, pk):
-        job_listing = JobListing.objects.get(pk=pk)
-        serializer = JobListingSerializer(job_listing, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class GetResumeById(APIView):
+#     # Ensure user is authenticated
+#     permission_classes = [IsAuthenticated]
 
+#     def get(self, request, pk):
+#         # Retrieve the resume by its ID and ensure it's owned by the authenticated user
+#         try:
+#             resume = Resume.objects.get(user_id=request.user, pk=pk)
+#         except Resume.DoesNotExist:
+#             return Response({"detail": "Resume not found."}, status=status.HTTP_404_NOT_FOUND)
+
+#         # Serialize the resume data
+#         serializer = ResumeSerializer(resume)
+
+#         # Return the serialized resume data as response
+#         return Response(serializer.data)
+
+
+# class CreateResume(APIView):
+#     # Ensure user is authenticated
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request):
+#         serializer = ResumeSerializer(data=request.data, context={"request": request})
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# class UpdateResume(APIView):
+#     # Ensure user is authenticated
+#     permission_classes = [IsAuthenticated]
+
+#     def put(self, request, pk):
+#         resume = Resume.objects.get(pk=pk)
+#         serializer = ResumeSerializer(resume, data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+
+def create_api_views(model, serializer):
+    """Dynamically generates API views for CRUD operations on a given model."""
+
+    class GetAllObjects(APIView):
+        permission_classes = [IsAuthenticated]
+
+        def get(self, request):
+            objects = model.objects.filter(user=request.user)
+            serializer_instance = serializer(objects, many=True)
+            return Response(serializer_instance.data)
+
+    class GetObjectById(APIView):
+        permission_classes = [IsAuthenticated]
+
+        def get(self, request, pk):
+            obj = get_object_or_404(model, user=request.user, pk=pk)
+            serializer_instance = serializer(obj)
+            return Response(serializer_instance.data)
+
+    class CreateObject(APIView):
+        permission_classes = [IsAuthenticated]
+
+        def post(self, request):
+            serializer_instance = serializer(data=request.data, context={"request": request})
+            if serializer_instance.is_valid():
+                serializer_instance.save()
+                return Response(serializer_instance.data, status=status.HTTP_201_CREATED)
+            return Response(serializer_instance.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    class UpdateObject(APIView):
+        permission_classes = [IsAuthenticated]
+
+        def put(self, request, pk):
+            obj = get_object_or_404(model, pk=pk, user=request.user)
+            serializer_instance = serializer(obj, data=request.data, context={"request": request})
+            if serializer_instance.is_valid():
+                serializer_instance.save()
+                return Response(serializer_instance.data)
+            return Response(serializer_instance.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    return GetAllObjects, GetObjectById, CreateObject, UpdateObject
+
+# Dynamically create API views for each model
+ResumeViews = create_api_views(Resume, ResumeSerializer)
+ExperienceViews = create_api_views(Experience, ExperienceSerializer)
+ApplicationViews = create_api_views(Application, ApplicationSerializer)
+
+# Assigning dynamically generated views to class names
+GetAllResumes, GetResumeById, CreateResume, UpdateResume = ResumeViews
+GetAllExperiences, GetExperienceById, CreateExperience, UpdateExperience = ExperienceViews
+GetAllApplications, GetApplicationById, CreateApplication, UpdateApplication = ApplicationViews
