@@ -3,13 +3,26 @@ from .views import *
 
 urlpatterns = [
     # User authentication
-    path('login', Login.as_view(), name='login'),
-    path('register', Register.as_view(), name='register'),
+    path('login/', Login.as_view(), name='login'),
+    path('register/', Register.as_view(), name='register'),
     path("refresh/", RefreshTokenView.as_view(), name="token_refresh"),
     path("protected/", protected_view, name="protected"),
 
-    # Job listings
-    path('job-listings', GetJobListings.as_view(), name='job-listings'),
-    path('create-job-listing', CreateJobListing.as_view(), name='create-job-listing'),
-    path('update-job-listing/<int:pk>', UpdateJobListing.as_view(), name='update-job-listing'),
+    # Resumes
+    path('resumes/', GetAllResumes.as_view(), name='resumes'),
+    path('resumes/<int:pk>/', GetResumeById.as_view(), name='get-resume-by-id'),
+    path('create-resume/', CreateResume.as_view(), name='create-resume'),
+    path('update-resume/<int:pk>/', UpdateResume.as_view(), name='update-resume'),
+
+    #Experiences
+    path('experiences/', GetAllExperiences.as_view(), name='experiences'),
+    path('experiences/<int:pk>/', GetExperienceById.as_view(), name='get-experience-by-id'),
+    path('create-experience/', CreateExperience.as_view(), name='create-experience'),
+    path('update-experience/<int:pk>/', UpdateExperience.as_view(), name='update-experience'),
+
+    #Applications
+    path('applications/', GetAllApplications.as_view(), name='applications'),
+    path('applications/<int:pk>/', GetApplicationById.as_view(), name='get-application-by-id'),
+    path('create-application/', CreateApplication.as_view(), name='create-application'),
+    path('update-application/<int:pk>/', UpdateApplication.as_view(), name='update-application'),
 ]
