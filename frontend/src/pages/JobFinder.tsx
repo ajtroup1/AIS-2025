@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../css/JobFinder.css";
 
-// Define the type for a job entry
 type JobEntry = {
   id: number;
   title: string;
@@ -12,7 +11,6 @@ type JobEntry = {
 };
 
 const JobFinder: React.FC = () => {
-  // State to manage filter inputs
   const [filters, setFilters] = useState({
     title: "",
     location: "",
@@ -20,53 +18,30 @@ const JobFinder: React.FC = () => {
     jobType: "",
   });
 
-  // State to manage the list of jobs (initially empty, to be populated via API)
   const [jobs, setJobs] = useState<JobEntry[]>([]);
-
-  // State to manage filtered jobs
   const [filteredJobs, setFilteredJobs] = useState<JobEntry[]>([]);
 
-  // Fetch jobs from the API (replace with actual API call)
+  // Initialize jobs and filteredJobs
   useEffect(() => {
-    // Example: Fetch jobs from an API
-    // fetch("/api/jobs")
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setJobs(data);
-    //     setFilteredJobs(data);
-    //   })
-    //   .catch((error) => console.error("Error fetching jobs:", error));
-
-    // For now, set jobs to an empty array
-    setJobs([]);
-    setFilteredJobs([]);
+    if (jobs.length === 0) {
+      setJobs([]);
+      setFilteredJobs([]);
+    }
   }, []);
 
-  // Update filtered jobs whenever filters or jobs change
+  
   useEffect(() => {
-    const filtered = [];
-    for (let i = 0; i < jobs.length; i++) {
-      const job = jobs[i];
-      let includeJob = true;
-
-      for (const key in filters) {
+    const filtered = jobs.filter((job) => {
+      return Object.keys(filters).every((key) => {
         const filterValue = filters[key as keyof typeof filters];
         const jobValue = job[key as keyof JobEntry];
-
-        if (filterValue && !String(jobValue).toLowerCase().includes(String(filterValue).toLowerCase())) {
-          includeJob = false;
-          break;
-        }
-      }
-
-      if (includeJob) {
-        filtered.push(job);
-      }
-    }
+        return !filterValue || String(jobValue).toLowerCase().includes(String(filterValue).toLowerCase());
+      });
+    });
     setFilteredJobs(filtered);
   }, [filters, jobs]);
 
-  // Function to handle applying for a job (replace with actual logic)
+
   const handleApply = (id: number) => {
     alert(`Apply for job with ID: ${id}`);
   };
@@ -75,12 +50,12 @@ const JobFinder: React.FC = () => {
     <div className="job-finder">
       <h1>Find Your Next Job</h1>
 
-      {/* Filter Inputs */}
       <div className="filters">
         <input
           type="text"
           placeholder="Job Title"
           value={filters.title}
+          style={{ color: filters.experience ? "#333" : "#777" }}
           onChange={(e) => setFilters({ ...filters, title: e.target.value })}
         />
         <input
@@ -88,10 +63,12 @@ const JobFinder: React.FC = () => {
           placeholder="Location"
           value={filters.location}
           onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+          style={{ color: filters.experience ? "#333" : "#777" }}
         />
         <select
           value={filters.experience}
           onChange={(e) => setFilters({ ...filters, experience: e.target.value })}
+          style={{ color: filters.experience ? "#333" : "#777" }}
         >
           <option value="">Experience Level</option>
           <option value="Entry-Level">Entry-Level</option>
@@ -101,6 +78,7 @@ const JobFinder: React.FC = () => {
         <select
           value={filters.jobType}
           onChange={(e) => setFilters({ ...filters, jobType: e.target.value })}
+          style={{ color: filters.experience ? "#333" : "#777" }}
         >
           <option value="">Job Type</option>
           <option value="Full-Time">Full-Time</option>
@@ -110,26 +88,18 @@ const JobFinder: React.FC = () => {
         </select>
       </div>
 
-      {/* Job Listings */}
       <div className="job-list">
         {filteredJobs.length > 0 ? (
-          (() => {
-            const jobCards = [];
-            for (let i = 0; i < filteredJobs.length; i++) {
-              const job = filteredJobs[i];
-              jobCards.push(
-                <div key={job.id} className="job-card">
-                  <h2>{job.title}</h2>
-                  <p><strong>Company:</strong> {job.company}</p>
-                  <p><strong>Location:</strong> {job.location}</p>
-                  <p><strong>Experience:</strong> {job.experience}</p>
-                  <p><strong>Type:</strong> {job.jobType}</p>
-                  <button onClick={() => handleApply(job.id)}>Apply Now</button>
-                </div>
-              );
-            }
-            return jobCards;
-          })()
+          filteredJobs.map((job) => (
+            <div key={job.id} className="job-card">
+              <h2>{job.title}</h2>
+              <p><strong>Company:</strong> {job.company}</p>
+              <p><strong>Location:</strong> {job.location}</p>
+              <p><strong>Experience:</strong> {job.experience}</p>
+              <p><strong>Type:</strong> {job.jobType}</p>
+              <button onClick={() => handleApply(job.id)}>Apply Now</button>
+            </div>
+          ))
         ) : (
           <p className="no-jobs">No jobs found. Try adjusting your filters.</p>
         )}

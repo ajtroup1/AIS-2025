@@ -1,36 +1,36 @@
-/* General Styles */
-.experience-archive {
+.experienceArchive {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center horizontally */
-    justify-content: flex-start; /* Align content to the top */
-    min-height: 100vh; /* Full viewport height */
+    align-items: center;
+    justify-content: flex-grow;
+    min-height: 100vh;
     padding: 20px;
     box-sizing: border-box;
-    background-color: #f9f9f9; /* Light background for the page */
+    background-color: #f9f9f9;
     font-family: Arial, sans-serif;
 }
 
-/* Search Bar Styles */
-.search-bar {
+.searchBar {
     display: flex;
-    gap: 10px; /* Space between input and buttons */
+    gap: 10px;
     margin-bottom: 20px;
-    width: 80%; /* Match the table width */
-    max-width: 1000px; /* Maximum width for the search bar */
+    width: 80%;
+    max-width: 1000px;
 }
 
-.search-bar input {
-    flex: 1; /* Take up remaining space */
+.searchBar input {
+    flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+    background-color: white;
+    color: #333;
 }
 
-.search-bar button {
+.searchBar button {
     padding: 10px 20px;
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 4px;
@@ -39,43 +39,41 @@
     transition: background-color 0.3s ease;
 }
 
-.search-bar button:hover {
-    background-color: #45a049; /* Darker green on hover */
+.searchBar button:hover {
+    background-color: #45a049;
 }
 
-/* Table Styles */
-.experience-table {
-    width: 80%; /* Match the search bar width */
-    max-width: 1000px; /* Maximum width for the table */
+.experienceTable {
+    width: 100%;
+    max-width: 1000px;
     border-collapse: collapse;
     background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for the table */
-    border-radius: 8px; /* Rounded corners */
-    overflow: hidden; /* Ensure rounded corners are visible */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-.experience-table th,
-.experience-table td {
+.experienceTable th,
+.experienceTable td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #ddd; /* Light border between rows */
+    border-bottom: 1px solid #ddd;
 }
 
-.experience-table th {
-    background-color: #4CAF50; /* Green header */
+.experienceTable th {
+    background-color: #4CAF50;
     color: white;
     font-weight: bold;
 }
 
-.experience-table tr:hover {
-    background-color: #f1f1f1; /* Light hover effect for rows */
+.experienceTable tr:hover {
+    background-color: #f1f1f1;
 }
 
-/* Action Buttons Styles */
-.experience-table td button {
+.experienceTable td button {
     padding: 6px 12px;
     margin-right: 5px;
-    background-color: #007bff; /* Blue */
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
@@ -84,23 +82,22 @@
     transition: background-color 0.3s ease;
 }
 
-.experience-table td button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+.experienceTable td button:hover {
+    background-color: #0056b3;
 }
 
-.experience-table td button:last-child {
-    margin-right: 0; /* Remove margin for the last button */
+.experienceTable td button:last-child {
+    margin-right: 0;
 }
 
-.experience-table td button.delete {
-    background-color: #dc3545; /* Red for delete button */
+.experienceTable td button.delete {
+    background-color: #dc3545;
 }
 
-.experience-table td button.delete:hover {
-    background-color: #c82333; /* Darker red on hover */
+.experienceTable td button.delete:hover {
+    background-color: #c82333;
 }
 
-/* Modal Styles */
 .modal {
     position: fixed;
     top: 0;
@@ -113,8 +110,9 @@
     align-items: center;
 }
 
-.modal-content {
+.modalContent {
     background: white;
+    color: #333;
     padding: 20px;
     border-radius: 10px;
     width: 350px;
@@ -124,17 +122,20 @@
     animation: fadeIn 0.3s ease-in-out;
 }
 
-.modal-content h2 {
+.modalContent h2 {
     margin-bottom: 15px;
     text-align: center;
+    color: #333;
 }
 
-.modal-content label {
+.modalContent label {
     font-weight: bold;
     margin-top: 10px;
 }
 
-.modal-content input {
+.modalContent input {
+    background-color: white;
+    color: #333;
     padding: 8px;
     margin-top: 5px;
     border: 1px solid #ccc;
@@ -143,7 +144,7 @@
     width: 100%;
 }
 
-.modal-content button {
+.modalContent button {
     margin-top: 15px;
     padding: 10px;
     cursor: pointer;
@@ -153,25 +154,24 @@
     transition: background-color 0.3s ease;
 }
 
-.modal-content button:first-of-type {
+.modalContent button:first-of-type {
     background-color: #4CAF50;
     color: white;
 }
 
-.modal-content button:first-of-type:hover {
+.modalContent button:first-of-type:hover {
     background-color: #45a049;
 }
 
-.modal-content button:last-of-type {
+.modalContent button:last-of-type {
     background-color: #dc3545;
     color: white;
 }
 
-.modal-content button:last-of-type:hover {
+.modalContent button:last-of-type:hover {
     background-color: #c82333;
 }
 
-/* Fade-in animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -183,27 +183,25 @@
     }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
-    .search-bar {
-        flex-direction: column; /* Stack input and buttons vertically on small screens */
+    .searchBar {
+        flex-direction: column;
         gap: 10px;
     }
 
-    .search-bar input {
-        width: 100%; /* Full width for input on small screens */
+    .searchBar input {
+        width: 100%;
     }
 
-    .search-bar button {
-        width: 100%; /* Full width for buttons on small screens */
+    .searchBar button {
+        width: 100%;
     }
 
-    .experience-table {
-        width: 100%; /* Full width for table on small screens */
+    .experienceTable {
+        width: 100%;
     }
 
-    .modal-content {
-        width: 90%; /* Make modal take more width on smaller screens */
+    .modalContent {
+        width: 90%;
     }
 }
-

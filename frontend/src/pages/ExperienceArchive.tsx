@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "../css/ExperienceArchive.css";
 import Sidebar from "./Sidebar";
 
-// Define the type for an experience entry
 type ExperienceEntry = {
   id: number;
   jobTitle: string;
@@ -47,23 +46,12 @@ const ExperienceArchive: React.FC = () => {
     }
 
     if (newEntry.id === 0) {
-      // Add new entry
-      const updatedEntries = [];
-      for (let i = 0; i < entries.length; i++) {
-        updatedEntries.push(entries[i]);
-      }
-      updatedEntries.push({ ...newEntry, id: entries.length + 1 });
+      const updatedEntries = [...entries, { ...newEntry, id: entries.length + 1 }];
       setEntries(updatedEntries);
     } else {
-      // Update existing entry
-      const updatedEntries = [];
-      for (let i = 0; i < entries.length; i++) {
-        if (entries[i].id === newEntry.id) {
-          updatedEntries.push(newEntry);
-        } else {
-          updatedEntries.push(entries[i]);
-        }
-      }
+      const updatedEntries = entries.map((entry) =>
+        entry.id === newEntry.id ? newEntry : entry
+      );
       setEntries(updatedEntries);
     }
 
@@ -71,22 +59,15 @@ const ExperienceArchive: React.FC = () => {
   };
 
   const handleEdit = (id: number) => {
-    for (let i = 0; i < entries.length; i++) {
-      if (entries[i].id === id) {
-        setNewEntry(entries[i]);
-        setIsExperienceModalOpen(true);
-        break;
-      }
+    const entryToEdit = entries.find((entry) => entry.id === id);
+    if (entryToEdit) {
+      setNewEntry(entryToEdit);
+      setIsExperienceModalOpen(true);
     }
   };
 
   const handleDelete = (id: number) => {
-    const updatedEntries = [];
-    for (let i = 0; i < entries.length; i++) {
-      if (entries[i].id !== id) {
-        updatedEntries.push(entries[i]);
-      }
-    }
+    const updatedEntries = entries.filter((entry) => entry.id !== id);
     setEntries(updatedEntries);
   };
 
@@ -112,12 +93,10 @@ const ExperienceArchive: React.FC = () => {
   };
 
   return (
-    <div className="experience-archive">
-      {/* Sidebar with buttons for uploading resume and editing experiences */}
+    <div className="experienceArchive">
       <Sidebar onUploadResume={handleUploadResume} onEditExperiences={handleAddNew} />
 
-      {/* Search Bar */}
-      <div className="search-bar">
+      <div className="searchBar">
         <input
           type="text"
           placeholder="Search by Job Title..."
@@ -128,44 +107,35 @@ const ExperienceArchive: React.FC = () => {
         <button onClick={handleAddNew}>Add New</button>
       </div>
 
-      {/* Table to display experience entries */}
-      <table className="experience-table">
+      <table className="experienceTable">
         <thead>
           <tr>
             <th>Job Title</th>
-            <th>Firm</th>
+            <th>Company</th>
             <th>Duration</th>
             <th>Location</th>
-            <th>Actions</th>
+            <th>Description</th>
           </tr>
         </thead>
         <tbody>
-          {(() => {
-            const rows = [];
-            for (let i = 0; i < entries.length; i++) {
-              const entry = entries[i];
-              rows.push(
-                <tr key={entry.id}>
-                  <td>{entry.jobTitle}</td>
-                  <td>{entry.firm}</td>
-                  <td>{entry.duration}</td>
-                  <td>{entry.location}</td>
-                  <td>
-                    <button onClick={() => handleEdit(entry.id)}>Edit</button>
-                    <button onClick={() => handleDelete(entry.id)}>Delete</button>
-                  </td>
-                </tr>
-              );
-            }
-            return rows;
-          })()}
+          {entries.map((entry) => (
+            <tr key={entry.id}>
+              <td>{entry.jobTitle}</td>
+              <td>{entry.firm}</td>
+              <td>{entry.duration}</td>
+              <td>{entry.location}</td>
+              <td>
+                <button onClick={() => handleEdit(entry.id)}>Edit</button>
+                <button onClick={() => handleDelete(entry.id)}>Delete</button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
-      {/* Modal for adding/editing experience entries */}
       {isExperienceModalOpen && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modalContent">
             <h2>{newEntry.id === 0 ? "Add New Experience" : "Edit Experience"}</h2>
             <label>Job Title:</label>
             <input
@@ -197,10 +167,9 @@ const ExperienceArchive: React.FC = () => {
         </div>
       )}
 
-      {/* Modal for uploading a resume */}
       {isResumeModalOpen && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modalContent">
             <h2>Upload Resume</h2>
             <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
             <button onClick={handleSaveResume}>Upload</button>
