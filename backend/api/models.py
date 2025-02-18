@@ -37,6 +37,7 @@ class Experience(models.Model):
     from_date = models.DateTimeField()
     to_date = models.DateTimeField()
     location = models.CharField(max_length=200)
+    description = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="experiences")
 
 # Associative entity between Resume and Experience

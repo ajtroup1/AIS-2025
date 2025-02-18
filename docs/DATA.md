@@ -17,6 +17,7 @@ erDiagram
     }
     EXPERIENCE{
         INT experience_id NOT NULL PK
+        VARCHAR job_title NOT NULL
         VARCHAR company NOT NULL
         ENUM job_type NOT NULL
         DATE from_date NOT NULL
@@ -25,6 +26,7 @@ erDiagram
         VARCHAR state
         ENUM skills
         ENUM techonology
+        INT user_id FK
     }
     RESUME {
         INT resume_id NOT NULL PK
@@ -32,6 +34,7 @@ erDiagram
         VARCHAR resume_name NOT NULL
         VARCHAR filepath NOT NULL
         TEXT content
+        INT user_id FK
     }
     RES_EXP {
         INT resume_id NOT NULL FK
@@ -47,6 +50,8 @@ erDiagram
         VARCHAR city
         VARCHAR state
         TEXT job_description
+        INT user_id FK
+        INT resume_id FK
     }
 
     USER ||--o{ EXPERIENCE : "has"
@@ -62,17 +67,18 @@ erDiagram
 ```mermaid
 classDiagram
     class USER {
-        +VARCHAR username
+        +VARCHAR username PK
         +VARCHAR password
         +VARCHAR email
         +login(): void
         +logout(): void
-        +signup(): logout
-        +updateProfile(newEmail: VARCHAR):void
+        +signup(): void
+        +updateProfile(newEmail: VARCHAR): void
     }
 
     class EXPERIENCE {
-        +INT experience_id
+        +INT experience_id PK
+        +VARCHAR job_title
         +VARCHAR company
         +ENUM job_type
         +DATE from_date
@@ -81,31 +87,33 @@ classDiagram
         +VARCHAR state
         +ENUM skills
         +ENUM technology
+        +INT user_id FK
         +addExperience(newExperience: EXPERIENCE): void
         +getAllExperiences(): EXPERIENCE[]
-        +getExperienceById(exp_id : INT): EXPERIENCE
-        +updateExperience(exp_id : INT): void
+        +getExperienceById(exp_id: INT): EXPERIENCE
+        +updateExperience(exp_id: INT): void
     }
 
     class RESUME {
-        +INT resume_id
+        +INT resume_id PK
         +DATE date_compiled
         +VARCHAR resume_name
         +VARCHAR filepath
         +TEXT content
+        +INT user_id FK
         +addResume(newResume: RESUME): void
         +getAllResumes(): RESUME[]
-        +getResumeById(res_id : INT): RESUME
-        +updateResume(res_id : INT): void
+        +getResumeById(res_id: INT): RESUME
+        +updateResume(res_id: INT): void
     }
 
     class RES_EXP {
-        +INT resume_id
-        +INT experience_id
+        +INT resume_id FK
+        +INT experience_id FK
     }
 
     class APPLICATION {
-        +INT app_id
+        +INT app_id PK
         +VARCHAR job_title
         +VARCHAR company
         +ENUM status
@@ -114,10 +122,12 @@ classDiagram
         +VARCHAR city
         +VARCHAR state
         +TEXT job_description
+        +INT user_id FK
+        +INT resume_id FK
         +addApplication(newApplication: APPLICATION): void
         +getAllApplications(): APPLICATION[]
-        +getApplicationById(app_id : INT): APPLICATION
-        +updateApplication(app_id : INT): void
+        +getApplicationById(app_id: INT): APPLICATION
+        +updateApplication(app_id: INT): void
     }
 
     USER "1" -- "0..*" EXPERIENCE : has
