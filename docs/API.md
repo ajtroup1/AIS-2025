@@ -75,7 +75,7 @@ RESPONSE:
 *Examples shown are done in [Postman](https://www.postman.com/)*
 
 1. Register an account:
-- <img src="./imgs/Screenshot 2025-02-18 184710.png" style="width: 60%" />
+- <img src="./imgs/Screenshot 2025-02-18 184710.png" style="width: 100%" />
 - Expects:
     - A username
     - An email
@@ -83,13 +83,13 @@ RESPONSE:
         - Will be hashed before storage and during comparison
     - [Constraints](#http-responses)
 2. Login to your account:
-- <img src="./imgs/Screenshot 2025-02-18 185144.png" style="width: 60%" />
+- <img src="./imgs/Screenshot 2025-02-18 185144.png" style="width: 100%" />
 - Expects:
     - An "email", which can be either your usename or email
     - Your password
 - Returns:
     - Your access token to use during every request and the refresh token to renew it
-        - <img src="./imgs/Screenshot 2025-02-18 185444.png" style="width: 60%" />
+        - <img src="./imgs/Screenshot 2025-02-18 185444.png" style="width: 100%" />
 
 ## Routes
 The routes for the api are all accessible through the `/api` url route (ex. `http://127.0.0.1:8000/api/update-job-listing/1`).
