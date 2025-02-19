@@ -46,6 +46,15 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
         <button onClick={handleSignIn} className="Signinbutton">
           Sign In
         </button>
+         <p>
+              Don't have an account?{" "}
+              <button
+                onClick={() => setIsRegistering(true)}
+                style={{ background: "none", border: "none", color: "#0071ce", cursor: "pointer" }}
+              >
+                Register
+              </button>
+            </p>
       </div>
     </div>
   );

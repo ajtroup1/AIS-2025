@@ -27,6 +27,13 @@ const App: React.FC = () => {
     navigate("/"); 
   };
 
+  const handleRegister = (username: string, password: string) => {
+    // Simulate registration logic (e.g., API call)
+    alert(`User ${username} registered successfully!`);
+    // Automatically log the user in after registration
+    handleLogin(username);
+  };
+
   return (
     <div className="container">
       {}
@@ -66,7 +73,7 @@ const App: React.FC = () => {
               isLoggedIn ? (
                 <Navigate to="/" /> 
               ) : (
-                <LoginPage onLogin={handleLogin} />
+                <LoginPage onLogin={handleLogin} onRegister={handleRegister}/>
               )
             }
           />
