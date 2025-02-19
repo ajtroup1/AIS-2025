@@ -1,0 +1,207 @@
+.experienceArchive {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-grow;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+}
+
+.searchBar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 80%;
+    max-width: 1000px;
+}
+
+.searchBar input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    color: #333;
+}
+
+.searchBar button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.searchBar button:hover {
+    background-color: #45a049;
+}
+
+.experienceTable {
+    width: 100%;
+    max-width: 1000px;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.experienceTable th,
+.experienceTable td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.experienceTable th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+.experienceTable tr:hover {
+    background-color: #f1f1f1;
+}
+
+.experienceTable td button {
+    padding: 6px 12px;
+    margin-right: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.experienceTable td button:hover {
+    background-color: #0056b3;
+}
+
+.experienceTable td button:last-child {
+    margin-right: 0;
+}
+
+.experienceTable td button.delete {
+    background-color: #dc3545;
+}
+
+.experienceTable td button.delete:hover {
+    background-color: #c82333;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalContent {
+    background: white;
+    color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modalContent h2 {
+    margin-bottom: 15px;
+    text-align: center;
+    color: #333;
+}
+
+.modalContent label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.modalContent input {
+    background-color: white;
+    color: #333;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.modalContent button {
+    margin-top: 15px;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.modalContent button:first-of-type {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.modalContent button:first-of-type:hover {
+    background-color: #45a049;
+}
+
+.modalContent button:last-of-type {
+    background-color: #dc3545;
+    color: white;
+}
+
+.modalContent button:last-of-type:hover {
+    background-color: #c82333;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .searchBar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .searchBar input {
+        width: 100%;
+    }
+
+    .searchBar button {
+        width: 100%;
+    }
+
+    .experienceTable {
+        width: 100%;
+    }
+
+    .modalContent {
+        width: 90%;
+    }
+}
