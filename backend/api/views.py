@@ -7,6 +7,7 @@ from .models import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+from .scrape import scrape_indeed_jobs
 
 # USER / AUTH
 @api_view(["GET"])
@@ -68,6 +69,26 @@ class Login(APIView):
             )
 
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+class Scrape(APIView):
+    permissions = [IsAuthenticated]
+    def get(self, request):
+        # Get request parameters
+        data = request.query_params
+        q = data.get("q")
+        l = data.get("l")
+        radius = data.get("radius")
+        ignore = data.getlist("ignore")
+        params = {
+            "q": q,
+            "l": l,
+            "radius": radius,
+            "ignore": ignore
+        }
+        # Scrape job listings from Indeed
+        job_listings = scrape_indeed_jobs(params, 2)
+
+        return Response({"result": job_listings}, status=status.HTTP_200_OK)
 
 
 class RefreshTokenView(APIView):
