@@ -1,0 +1,66 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .resumeBuilder {
+    width: 100%;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .resumeBuilder h1 {
+    text-align: center;
+    color: #0d47a1;
+    margin-bottom: 20px;
+  }
+  
+  .searchSection {
+    margin-bottom: 20px;
+  }
+  
+  .searchSection label {
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  .searchSection input {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .resultsSection {
+    margin-top: 20px;
+  }
+  
+  .resultsSection h2 {
+    color: #0d47a1;
+    margin-bottom: 10px;
+  }
+  
+  .resultsSection ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  
+  .resultsSection li {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }

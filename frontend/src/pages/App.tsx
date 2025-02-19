@@ -5,6 +5,8 @@ import ExperienceArchive from "./ExperienceArchive";
 import JobFinder from "./JobFinder";
 import ApplicationTracker from "./ApplicationTracker";
 import LoginPage from "./LoginPage"; 
+import ResumeArchive from "./ResumeArchive";
+import ResumeBuilder from "./ResumeBuilder";
 
 const App: React.FC = () => {
   const navigate = useNavigate();
@@ -31,10 +33,13 @@ const App: React.FC = () => {
       {isLoggedIn && (
         <header className="navbar">
           <nav className="nav-links">
-            <NavLink to="/"><button>My Home Page</button></NavLink>
-            <NavLink to="/experience"><button>My Experience Archive</button></NavLink>
-            <NavLink to="/job-finder"><button>My Job Finder</button></NavLink>
-            <NavLink to="/application-tracker"><button>My Application Tracker</button></NavLink>
+            <NavLink to="/"><button>Home Page</button></NavLink>
+            <NavLink to="/experience"><button>Experience Archive</button></NavLink>
+            <NavLink to="/job-finder"><button>Job Finder</button></NavLink>
+            <NavLink to="/application-tracker"><button>Application Tracker</button></NavLink>
+            <NavLink to="/resume-archive"><button>Resume Archive</button></NavLink>
+            <NavLink to="/resume-builder"><button>Resume Builder</button></NavLink>
+            
           </nav>
         </header>
       )}
@@ -52,6 +57,8 @@ const App: React.FC = () => {
           <Route path="/experience" element={<ExperienceArchive />} />
           <Route path="/job-finder" element={<JobFinder />} />
           <Route path="/application-tracker" element={<ApplicationTracker />} />
+          <Route path="/resume-archive" element={<ResumeArchive />} />
+          <Route path="/resume-builder" element={<ResumeBuilder />} />
           {}
           <Route
             path="/login"

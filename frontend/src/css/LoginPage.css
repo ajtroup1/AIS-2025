@@ -28,14 +28,11 @@
   
   .textBox1,
   .textBox2 {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     padding: 10px;
     background-color: transparent;
     height: 80px;
     width: 50%;
+    /* Remove display: flex and related properties */
   }
   
   .label {
@@ -49,12 +46,13 @@
   
   .input {
     height: 40px;
-    width: 50%;
+    width: 100%; /* Adjust width to fill the parent container */
     border-color: #0071ce;
     border-width: 1px;
     border-radius: 5px;
     padding-left: 10px;
-    background-color: white; 
+    background-color: white;
+    margin: 0 auto; /* Center the input field */
   }
   
   .Signinbutton {
