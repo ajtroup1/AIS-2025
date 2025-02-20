@@ -26,6 +26,7 @@
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+    color: black;
   }
   
   .resumeTable th {
@@ -64,7 +65,10 @@
     width: 100%;
     padding: 5px;
     margin-bottom: 10px;
+    color: black;
   }
+
+  
   
   .modalContent button {
     margin-right: 10px;

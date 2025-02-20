@@ -28,9 +28,7 @@ const App: React.FC = () => {
   };
 
   const handleRegister = (username: string, password: string) => {
-    // Simulate registration logic (e.g., API call)
     alert(`User ${username} registered successfully!`);
-    // Automatically log the user in after registration
     handleLogin(username);
   };
 

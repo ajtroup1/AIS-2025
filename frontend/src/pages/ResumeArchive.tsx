@@ -4,24 +4,25 @@ import "../css/ResumeArchive.css";
 type ResumeEntry = {
   id: number;
   year: number;
-  resumeText: string;
+  resumeFile: File | null;  // Changed from resumeText to resumeFile
 };
 
 const ResumeArchive: React.FC = () => {
   const [resumes, setResumes] = useState<ResumeEntry[]>([]);
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [resumeText, setResumeText] = useState<string>("");
-  const [resumeYear, setResumeYear] = useState<number>(new Date().getFullYear()); // New state for year
+  const [resumeFile, setResumeFile] = useState<File | null>(null); // New state for file input
+  const [resumeYear, setResumeYear] = useState<number>(new Date().getFullYear());
   const [editResumeId, setEditResumeId] = useState<number | null>(null);
-
 
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear(parseInt(e.target.value, 10));
   };
 
-  const handleResumeTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setResumeText(e.target.value);
+  const handleResumeFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setResumeFile(e.target.files[0]);
+    }
   };
 
   const handleResumeYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,14 +30,14 @@ const ResumeArchive: React.FC = () => {
   };
 
   const handleSaveResume = () => {
-    if (!resumeText.trim()) {
-      alert("Please enter resume text.");
+    if (!resumeFile) {
+      alert("Please upload a resume file.");
       return;
     }
 
     if (editResumeId !== null) {
       const updatedResumes = resumes.map((resume) =>
-        resume.id === editResumeId ? { ...resume, year: resumeYear, resumeText } : resume
+        resume.id === editResumeId ? { ...resume, year: resumeYear, resumeFile } : resume
       );
       setResumes(updatedResumes);
       setEditResumeId(null);
@@ -44,12 +45,12 @@ const ResumeArchive: React.FC = () => {
       const newResume: ResumeEntry = {
         id: resumes.length + 1,
         year: resumeYear,
-        resumeText,
+        resumeFile: resumeFile,
       };
       setResumes([...resumes, newResume]);
     }
 
-    setResumeText("");
+    setResumeFile(null);
     setResumeYear(new Date().getFullYear());
     setIsAddModalOpen(false);
   };
@@ -57,7 +58,7 @@ const ResumeArchive: React.FC = () => {
   const handleEditResume = (id: number) => {
     const resumeToEdit = resumes.find((resume) => resume.id === id);
     if (resumeToEdit) {
-      setResumeText(resumeToEdit.resumeText);
+      setResumeFile(resumeToEdit.resumeFile);
       setResumeYear(resumeToEdit.year);
       setEditResumeId(id);
       setIsAddModalOpen(true);
@@ -92,7 +93,7 @@ const ResumeArchive: React.FC = () => {
             <thead>
               <tr>
                 <th>Year</th>
-                <th>Resume Text</th>
+                <th>Resume File</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -100,7 +101,7 @@ const ResumeArchive: React.FC = () => {
               {filteredResumes.map((resume) => (
                 <tr key={resume.id}>
                   <td>{resume.year}</td>
-                  <td>{resume.resumeText}</td>
+                  <td>{resume.resumeFile ? resume.resumeFile.name : "No file uploaded"}</td>
                   <td>
                     <button onClick={() => handleEditResume(resume.id)}>Edit</button>
                     <button onClick={() => handleDeleteResume(resume.id)}>Delete</button>
@@ -122,12 +123,10 @@ const ResumeArchive: React.FC = () => {
                   min={2000}
                   max={new Date().getFullYear()}
                 />
-                <label>Resume Text: </label>
-                <textarea
-                  value={resumeText}
-                  onChange={handleResumeTextChange}
-                  placeholder="Enter resume text..."
-                  rows={5}
+                <label>Resume File: </label>
+                <input
+                  type="file"
+                  onChange={handleResumeFileChange}
                 />
                 <button onClick={handleSaveResume}>
                   {editResumeId !== null ? "Update" : "Save"}
@@ -135,7 +134,7 @@ const ResumeArchive: React.FC = () => {
                 <button
                   onClick={() => {
                     setIsAddModalOpen(false);
-                    setResumeText("");
+                    setResumeFile(null);
                     setResumeYear(new Date().getFullYear());
                     setEditResumeId(null);
                   }}
