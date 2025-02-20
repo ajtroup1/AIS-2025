@@ -1,5 +1,7 @@
 import requests
 from sentence_transformers import SentenceTransformer, util
+from docx import Document
+from datetime import datetime
 
 # Login for Auth
 loginURL = "http://127.0.0.1:8000/api/login/"
@@ -38,8 +40,8 @@ transformed = []
 for exp in rawData:
     # Ensure exp is a dictionary and we access it using the key
     i = {
-        "exp_id": exp.get('id'),  # Use 'get' to avoid KeyError
-        "exp_data": f"{exp.get('job_title', 'N/A')} - {exp.get('description', 'N/A')}",  # Use f-string for readability
+        "exp_id": exp.get('id'),
+        "exp_data": f"{exp.get('job_title', 'N/A')} - {exp.get('description', 'N/A')}",
         "similarity_score": 0
     }
     transformed.append(i)
@@ -79,8 +81,38 @@ similarity_scores = util.pytorch_cos_sim(job_embedding, experience_embeddings)[0
 for i, exp in enumerate(transformed):
     exp["similarity_score"] = similarity_scores[i].item()  # Convert tensor to Python float
 
+count = 3 #enter the number of top relevant jobs you would like to include
 # Sort experiences by similarity score (descending)
-top_5_experiences = sorted(transformed, key=lambda x: x["similarity_score"], reverse=True)[:5]
+top_relevant = sorted(transformed, key=lambda x: x["similarity_score"], reverse=True)[:count]
+shortlisted = []
+#Loop through the list of top relevant experiences
+for exp in top_relevant:
+    # filter the rawData experience objects to only contain the top relevant
+    for i in rawData:
+        if i.get('id') == exp.get('exp_id'):
+            shortlisted.append(i)
+# sort the experiences by date
+sorted_by_date = sorted(shortlisted, key=lambda x: x["from_date"], reverse=True)
 
-for exp in top_5_experiences:
-    print(exp["exp_id"])
+
+#method to write experience into the doc
+def addExperienceToDoc (expObj, doc):
+    from_date = datetime.strptime(expObj.get('from_date'), "%Y-%m-%dT%H:%M:%SZ")
+    to_date = datetime.strptime(expObj.get('to_date'), "%Y-%m-%dT%H:%M:%SZ")
+    doc.add_heading((f"{expObj.get('job_title')} | {expObj.get('company')} "),level=3)
+    expSection = doc.add_paragraph()
+    expSection.add_run(f"{from_date.strftime('%m/%d/%Y')} – {to_date.strftime('%m/%d/%Y')}\n")
+    expSection.add_run(f"{expObj.get('location')}\n").italic = True
+    expSection.add_run("Description: ").bold = True
+    expSection.add_run(f"{expObj.get('description')}")
+
+doc = Document()
+# add heading
+# Title (Name)
+doc.add_heading('Your Name',level=1)
+# Contact Information (Email, phone, linkedIn)
+doc.add_paragraph('Email: your.email@example.com | Phone: (123) 456-7890\nLinkedIn: https://linkedin.com/yourprofile')
+doc.add_heading('Working Experiences', level=2)
+for i in sorted_by_date:
+    addExperienceToDoc(i, doc)
+doc.save("resume.docx")
