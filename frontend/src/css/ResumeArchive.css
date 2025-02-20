@@ -1,0 +1,78 @@
+.resumeArchive {
+  font-family: Arial, sans-serif;
+}
+
+.controls {
+  margin-bottom: 20px;
+}
+
+.controls label {
+  margin-right: 10px;
+  color: black;
+}
+
+.controls select,
+.controls button {
+  padding: 5px 10px;
+  margin-right: 10px;
+  background-color: white;
+  color: black;
+}
+
+.resumeTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.resumeTable th,
+.resumeTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  color: black;
+}
+
+.resumeTable th {
+  background-color: #f2f2f2;
+}
+
+.resumeTable button {
+  margin-right: 5px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+}
+
+.modalContent label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.modalContent input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+
+
+.modalContent button {
+  margin-right: 10px;
+}

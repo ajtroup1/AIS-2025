@@ -96,6 +96,12 @@ class DeleteUser(APIView):
         user = request.user
         user.delete()
         return Response({"message": "Profile deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    
+class GetAllUsers(APIView):
+    def get(self, request):
+        users = User.objects.all()
+        serializer = RegisterSerializer(users, many=True)
+        return Response(serializer.data)
 
 
 class RefreshTokenView(APIView):

@@ -9,6 +9,7 @@ urlpatterns = [
     path("protected/", protected_view, name="protected"),
     path('update-profile/', UpdateUser.as_view(), name='update-profile'),
     path('delete-profile/', DeleteUser.as_view(), name='delete-profile'),
+    path('users/', GetAllUsers.as_view(), name='users'),
 
     # Resumes
     path('resumes/', GetAllResumes.as_view(), name='resumes'),

@@ -11,6 +11,7 @@ const App: React.FC = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
+  const [profile, setProfile] = useState<User>({} as User);
   const [accessToken, setAccessToken] = useState<string>("");
   const [refreshToken, setRefreshToken] = useState<string>("");
   const [experiences, setExperiences] = useState<Experience[]>([]);
