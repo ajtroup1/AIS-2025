@@ -7,7 +7,6 @@ from .models import *
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-from .scrape import scrape_indeed_jobs
 
 # USER / AUTH
 @api_view(["GET"])
@@ -72,25 +71,31 @@ class Login(APIView):
 
         return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
     
-class Scrape(APIView):
-    permissions = [IsAuthenticated]
-    def get(self, request):
-        # Get request parameters
-        data = request.query_params
-        q = data.get("q")
-        l = data.get("l")
-        radius = data.get("radius")
-        ignore = data.getlist("ignore")
-        params = {
-            "q": q,
-            "l": l,
-            "radius": radius,
-            "ignore": ignore
-        }
-        # Scrape job listings from Indeed
-        job_listings = scrape_indeed_jobs(params, 2)
+class UpdateUser(APIView):
+    permission_classes = [IsAuthenticated]
 
-        return Response({"result": job_listings}, status=status.HTTP_200_OK)
+    def put(self, request):
+        user = request.user  # Get the authenticated user
+        found = User.objects.filter(id=user.id).exists()
+        if not found:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        if "username" not in request.data or "email" not in request.data:
+            return Response({"error": "Username and email are required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        username = request.data["username"]
+        email = request.data["email"]
+
+        User.objects.update(username=username, email=email)
+        return Response({"message": "Profile updated successfully"}, status=status.HTTP_200_OK)
+    
+class DeleteUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        user.delete()
+        return Response({"message": "Profile deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class RefreshTokenView(APIView):
