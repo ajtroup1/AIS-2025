@@ -6,9 +6,9 @@ This document is version `1.0`
 1. [Overview](#overview)
 2. [Authorization](#authorization)
     - [JWT Resources](#jwt-resources)
-3. [Routes](#routes)
+3. [Quick Start](#quick-start)
+4. [Routes](#routes)
     - [User Routes](#user-routes)
-    - [Job Listing Routes](#job-listing-routes)
 
 
 ## Overview
@@ -69,6 +69,28 @@ RESPONSE:
 - [Tech With Tim - JWT Explaination](https://www.youtube.com/watch?v=vLTJ_03Dq4M)
 - [JWT Wiki](https://en.wikipedia.org/wiki/JSON_Web_Token)
 
+
+## Quick Start
+
+*Examples shown are done in [Postman](https://www.postman.com/)*
+
+1. Register an account:
+- <img src="./imgs/Screenshot 2025-02-18 184710.png" style="width: 100%" />
+- Expects:
+    - A username
+    - An email
+    - A password
+        - Will be hashed before storage and during comparison
+    - [Constraints](#http-responses)
+2. Login to your account:
+- <img src="./imgs/Screenshot 2025-02-18 185144.png" style="width: 100%" />
+- Expects:
+    - An "email", which can be either your usename or email
+    - Your password
+- Returns:
+    - Your access token to use during every request and the refresh token to renew it
+        - <img src="./imgs/Screenshot 2025-02-18 185444.png" style="width: 100%" />
+
 ## Routes
 The routes for the api are all accessible through the `/api` url route (ex. `http://127.0.0.1:8000/api/update-job-listing/1`).
 
@@ -83,7 +105,7 @@ The routes for the api are all accessible through the `/api` url route (ex. `htt
               "password": "Password123!"
           }
           ```
-    - HTTP Responses:
+    - #### HTTP Responses:
         - `201 Created` Successfully registered the user.
         - `400 Bad Request` A number of issues could have occured:
             - Username is already taken
@@ -118,86 +140,3 @@ The routes for the api are all accessible through the `/api` url route (ex. `htt
               }
               ```
         - `401 Unauthorized` Invalid credentials.
-
-### Job Listing Routes
-- POST `/job-listings`
-    - Returns a list of job listings for a given user
-    - Making an HTTP Request:
-        - Simply pass the access token, and it will return that user's job listings
-    - HTTP Responses:
-        - `200 OK` Successfully found the user's job listings, can be empty
-            - ```json
-              [
-                  {
-                      "id": 1,
-                      "position": "Test Position",
-                      "description": "testing",
-                      "company": "Fake Company LLC.",
-                      "status": "Interview",
-                      "location": "Earth",
-                      "salary": "0.00",
-                      "created_at": "2025-01-30T21:49:50.848156Z",
-                      "updated_at": "2025-01-30T21:53:29.234439Z",
-                      "user": 1
-                  },
-                  {
-                      "id": 2,
-                      "position": "Other Test Position",
-                      "description": "testing2",
-                      "company": "Other Fake Company LLC.",
-                      "status": "Application Sent",
-                      "location": "Still Earth",
-                      "salary": "2.00",
-                      "created_at": "2025-01-30T21:49:50.848156Z",
-                      "updated_at": "2025-01-30T21:53:29.234439Z",
-                      "user": 1
-                  },
-              ]
-              ```
-        - `401 Unauthorized` Bad access code.
-- POST `/create-job-listing`
-    - Making an HTTP Request:
-        - ```json
-          {
-              "position": "Test Position",
-              "company": "Fake Company LLC.",
-              "description": "testing",
-              "location": "Earth",
-              "salary": 0,
-              "user": 1
-          }
-          ```
-    - HTTP Responses
-        - `201 Created` Successfully created a job listing
-        - `400 Bad Request` Could be a number of issues:
-            - User with primary key `{SOME INTEGER}` does not exist
-            - `{INVALID CHOICE}` is not a valid choice for `JobListing.status`
-                - Valid choices:
-                    - `Application Sent`
-                    - `Rejected`
-                    - `Response`
-                    - `Interview`
-                    - `Offer`
-- PUT `/update-job-listing/[id]`
-    - Making an HTTP request:
-        - ```json
-          {
-              "position": "Test Position",
-              "company": "Fake Company LLC.",
-              "description": "testing",
-              "location": "Earth",
-              "salary": 0,
-              "user": 1
-          }
-          ```
-    - HTTP Responses
-        - `200 OK` Successfully edit the job listing (any number of attributes)
-        - `400 Bad Request` Could be a number of issues:
-            - User with primary key `{SOME INTEGER}` does not exist
-            - `{INVALID CHOICE}` is not a valid choice for `JobListing.status`
-                - Valid choices:
-                    - `Application Sent`
-                    - `Rejected`
-                    - `Response`
-                    - `Interview`
-                    - `Offer`

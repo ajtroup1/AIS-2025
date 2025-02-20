@@ -66,6 +66,10 @@ class BaseSerializer(serializers.ModelSerializer):
             setattr(instance, key, value)
         instance.save()
         return instance
+    
+    def delete(self, instance):
+        instance.delete()
+        return instance
 
 # Resume
 class ResumeSerializer (BaseSerializer):

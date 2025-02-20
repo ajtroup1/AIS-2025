@@ -46,6 +46,7 @@ class Login(APIView):
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
+        print(email, password)
 
         # Attempt to find user by email first
         user = User.objects.filter(email=email).first()
@@ -63,6 +64,7 @@ class Login(APIView):
                 {
                     "access": str(refresh.access_token),
                     "refresh": str(refresh),
+                    "userId": user.id,
                 },
                 status=status.HTTP_200_OK,
             )
@@ -82,6 +84,11 @@ class RefreshTokenView(APIView):
             return Response({"access": str(refresh.access_token)}, status=status.HTTP_200_OK)
         except Exception:
             return Response({"error": "Invalid refresh token"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+class Ping(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        return Response({"message": "pong"})
         
 # RESUMES
 # class GetAllResumes(APIView):
@@ -187,8 +194,16 @@ def create_api_views(model, serializer):
                 serializer_instance.save()
                 return Response(serializer_instance.data)
             return Response(serializer_instance.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    class DeleteObject(APIView):
+        permission_classes = [IsAuthenticated]
 
-    return GetAllObjects, GetObjectById, CreateObject, UpdateObject
+        def delete(self, request, pk):
+            obj = get_object_or_404(model, pk=pk, user=request.user)
+            obj.delete()
+            return Response({"message": "Object deleted."}, status=status.HTTP_204_NO_CONTENT)
+
+    return GetAllObjects, GetObjectById, CreateObject, UpdateObject, DeleteObject
 
 # Dynamically create API views for each model
 ResumeViews = create_api_views(Resume, ResumeSerializer)
@@ -196,6 +211,6 @@ ExperienceViews = create_api_views(Experience, ExperienceSerializer)
 ApplicationViews = create_api_views(Application, ApplicationSerializer)
 
 # Assigning dynamically generated views to class names
-GetAllResumes, GetResumeById, CreateResume, UpdateResume = ResumeViews
-GetAllExperiences, GetExperienceById, CreateExperience, UpdateExperience = ExperienceViews
-GetAllApplications, GetApplicationById, CreateApplication, UpdateApplication = ApplicationViews
+GetAllResumes, GetResumeById, CreateResume, UpdateResume, DeleteResume = ResumeViews
+GetAllExperiences, GetExperienceById, CreateExperience, UpdateExperience, DeleteExperience = ExperienceViews
+GetAllApplications, GetApplicationById, CreateApplication, UpdateApplication, DeleteApplication = ApplicationViews

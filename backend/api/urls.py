@@ -19,10 +19,14 @@ urlpatterns = [
     path('experiences/<int:pk>/', GetExperienceById.as_view(), name='get-experience-by-id'),
     path('create-experience/', CreateExperience.as_view(), name='create-experience'),
     path('update-experience/<int:pk>/', UpdateExperience.as_view(), name='update-experience'),
+    path('delete-experience/<int:pk>/', DeleteExperience.as_view(), name='delete-experience'),
 
     #Applications
     path('applications/', GetAllApplications.as_view(), name='applications'),
     path('applications/<int:pk>/', GetApplicationById.as_view(), name='get-application-by-id'),
     path('create-application/', CreateApplication.as_view(), name='create-application'),
     path('update-application/<int:pk>/', UpdateApplication.as_view(), name='update-application'),
+    path('delete-application/<int:pk>/', DeleteApplication.as_view(), name='delete-application'),
+
+    path('ping/', Ping.as_view(), name='ping'),
 ]

@@ -2,6 +2,8 @@
 
 This document is on verion `1.1`
 
+This document is on verion `1.1`
+
 This file is responsible for representing the data structures used in ____. Below are the [Entity Relationship Diagram](#entity-relations) and the [Class Diagram](#class-diagram)
 
 *Rendered with [Mermaid](https://mermaid.js.org/)*
@@ -11,6 +13,7 @@ This file is responsible for representing the data structures used in ____. Belo
 ```mermaid
 erDiagram
     USER {
+        VARCHAR username NOT NULL PK
         VARCHAR username NOT NULL PK
         VARCHAR password NOT NULL
         VARCHAR email
@@ -29,6 +32,10 @@ erDiagram
         INT user_id FK
     }
     RESUME {
+        INT resume_id NOT NULL PK
+        DATE date_compiled NOT NULL
+        VARCHAR resume_name NOT NULL
+        VARCHAR filepath NOT NULL
         INT resume_id NOT NULL PK
         DATE date_compiled NOT NULL
         VARCHAR resume_name NOT NULL

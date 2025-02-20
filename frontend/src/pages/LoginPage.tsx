@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../css/LoginPage.css";
 
 interface LoginPageProps {
-  onLogin: (username: string) => void; 
+  onLogin: (username: string, password: string) => void;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
@@ -10,8 +10,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const [password, setPassword] = useState<string>("");
 
   const handleSignIn = () => {
-    
-    onLogin(username);
+    onLogin(username, password);
   };
 
   return (
