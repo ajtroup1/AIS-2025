@@ -135,7 +135,6 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
 
     newEntry.id = data.id;
 
-    // 🔥 Fix: Update existing experience instead of adding a new one
     const updatedEntries = experiences.some(exp => exp.id === newEntry.id)
       ? experiences.map(exp => (exp.id === newEntry.id ? newEntry : exp))
       : [...experiences, newEntry];

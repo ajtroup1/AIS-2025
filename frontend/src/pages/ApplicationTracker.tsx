@@ -1,52 +1,88 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/ApplicationTracker.css";
+import Cookies from "js-cookie";
 
-type Application = {
-  id: number;
-  jobTitle: string;
-  company: string;
-  location: string;
-  submittedDate: string;
-  status: string;
-  notes: string;
-};
+interface ApplicationTrackerProps {
+  applications: Application[];
+  setApplications: React.Dispatch<React.SetStateAction<Application[]>>;
+}
 
-const ApplicationTracker: React.FC = () => {
-  const [applications, setApplications] = useState<Application[]>([
-    {
-      id: 1,
-      jobTitle: "Software Engineer",
-      company: "Tech Corp",
-      location: "San Francisco, CA",
-      submittedDate: "2023-10-01",
-      status: "Applied",
-      notes: "Waiting for response.",
-    },
-  ]);
-
+const ApplicationTracker: React.FC<ApplicationTrackerProps> = ({ applications = [], setApplications }) => {
   const [newApplication, setNewApplication] = useState<Application>({
     id: 0,
-    jobTitle: "",
+    title: "",
     company: "",
+    status: "Application Sent",
+    jobType: "Internship",
     location: "",
     submittedDate: "",
-    status: "Applied",
-    notes: "",
+    description: "",
+    userId: 0,
+    resumeId: null,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchApplications = async () => {
+      const header = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("accessToken")}`,
+      }
+      const response = await fetch("http://127.0.0.1:8000/api/applications/",
+        {
+          method: "GET",
+          headers: header,
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        const normalized: Application[] = [];
+        // Modify the data to match the Experience type
+        data.map((entry: any) => {
+          const obj: Application = {
+            id: entry.id,
+            title: entry.job_title,
+            company: entry.company,
+            status: entry.status,
+            jobType: entry.job_type,
+            location: entry.location,
+            submittedDate: entry.submitted_date,
+            description: entry.description,
+            userId: entry.user,
+            resumeId: entry.resume_id,
+          }
+          normalized.push(obj);
+        });
+        // console.log(data)
+        setApplications(normalized);
+      } else {
+        alert("Failed to fetch experiences.");
+      }
+    }
+
+    if (applications.length < 1) {
+      // Fetch experiences from the API
+      fetchApplications()
+    }
+  }, []);
 
   const handleAddApplication = () => {
     setIsModalOpen(true);
     setEditingId(null);
     setNewApplication({
       id: 0,
-      jobTitle: "",
+      title: "",
       company: "",
+      status: "Application Sent",
+      jobType: "Internship",
       location: "",
       submittedDate: "",
-      status: "Applied",
-      notes: "",
+      description: "",
+      userId: 0,
+      resumeId: null,
     });
   };
 
@@ -59,29 +95,138 @@ const ApplicationTracker: React.FC = () => {
     }
   };
 
-  const handleSaveApplication = () => {
-    if (!newApplication.jobTitle || !newApplication.company || !newApplication.location || !newApplication.submittedDate) {
+  const APIEditApplication = async (id: number) => {
+    const header = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${Cookies.get("accessToken")}`,
+    }
+    const payload = {
+      job_title: newApplication.title,
+      company: newApplication.company,
+      status: newApplication.status,
+      job_type: newApplication.jobType,
+      location: newApplication.location,
+      submitted_date: newApplication.submittedDate,
+      description: newApplication.description,
+      user: Cookies.get("userId"),
+      resume_id: null,
+    }
+    const response = await fetch(`http://127.0.0.1:8000/api/update-application/${id}/`, {
+      method: "PUT",
+      headers: header,
+      body: JSON.stringify(payload),
+    }
+    );
+
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    } else {
+      alert("Failed to save application.");
+      console.log(data)
+      return null;
+    }
+  }
+
+  const handleSaveApplication = async () => {
+    if (!newApplication.title || !newApplication.company || !newApplication.location || !newApplication.submittedDate) {
       alert("Please fill in all required fields.");
       return;
     }
 
     if (editingId !== null) {
+      const response = await APIEditApplication(editingId);
+      if (!response) {
+        return;
+      }
       const updatedApplications = applications.map((app) =>
         app.id === editingId ? newApplication : app
       );
       setApplications(updatedApplications);
     } else {
-      const newApp = { ...newApplication, id: applications.length + 1 };
+      const response = await APISaveApplication();
+
+      if (!response) {
+        return;
+      }
+
+      const newApp: Application = {
+        id: response.id,
+        title: response.job_title,
+        company: response.company,
+        status: response.status,
+        jobType: response.job_type,
+        location: response.location,
+        submittedDate: new Date(response.submitted_date).toISOString().split("T")[0],
+        description: response.description,
+        userId: response.user,
+        resumeId: response.resume_id ?? null,
+      };
+
       setApplications([...applications, newApp]);
     }
 
     setIsModalOpen(false);
   };
 
-  const handleDeleteApplication = (id: number) => {
+  const APISaveApplication = async () => {
+    const header = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${Cookies.get("accessToken")}`,
+    }
+    const payload = {
+      job_title: newApplication.title,
+      company: newApplication.company,
+      status: newApplication.status,
+      job_type: newApplication.jobType,
+      location: newApplication.location,
+      submitted_date: newApplication.submittedDate,
+      description: newApplication.description,
+      user: Cookies.get("userId"),
+      resume_id: null,
+    }
+    const response = await fetch("http://127.0.0.1:8000/api/create-application/", {
+      method: "POST",
+      headers: header,
+      body: JSON.stringify(payload),
+    }
+    );
+
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    } else {
+      alert("Failed to save application.");
+      console.log(data)
+      return null;
+    }
+  }
+
+  const handleDeleteApplication = async (id: number) => {
+    const response = await APIDeleteApplication(id);
+    if (!response) {
+      return;
+    }
     const updatedApplications = applications.filter((app) => app.id !== id);
     setApplications(updatedApplications);
   };
+
+  const APIDeleteApplication = async (id: number) => {
+    const header = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${Cookies.get("accessToken")}`,
+    }
+    const response = await fetch(`http://127.0.0.1:8000/api/delete-application/${id}/`, { headers: header, method: "DELETE" });
+
+    if (response.ok) {
+      return true;
+    } else {
+      alert("Failed to delete application.");
+      const data = await response.json();
+      console.log(data)
+      return null;
+    }
+  }
 
   const handleUploadApplication = () => {
     const fileInput = document.createElement("input");
@@ -99,6 +244,8 @@ const ApplicationTracker: React.FC = () => {
 
     fileInput.click();
   };
+
+  if (!applications) { <p>Loading</p> }
 
   return (
     <div className="applicationTracker">
@@ -124,12 +271,12 @@ const ApplicationTracker: React.FC = () => {
         <tbody>
           {applications.map((app) => (
             <tr key={app.id}>
-              <td>{app.jobTitle}</td>
+              <td>{app.title}</td>
               <td>{app.company}</td>
               <td>{app.location}</td>
-              <td>{app.submittedDate}</td>
+              <td>{app.submittedDate.toLocaleDateString}</td>
               <td>{app.status}</td>
-              <td>{app.notes}</td>
+              <td>{app.description}</td>
               <td>
                 <button className="edit" onClick={() => handleEditApplication(app.id)}>Edit</button>
                 <button className="delete" onClick={() => handleDeleteApplication(app.id)}>Delete</button>
@@ -144,7 +291,7 @@ const ApplicationTracker: React.FC = () => {
           <div className="modalContent">
             <h2>{editingId !== null ? "Edit Application" : "Add Application"}</h2>
             <label>Job Title:</label>
-            <input type="text" value={newApplication.jobTitle} onChange={(e) => setNewApplication({ ...newApplication, jobTitle: e.target.value })} />
+            <input type="text" value={newApplication.title} onChange={(e) => setNewApplication({ ...newApplication, title: e.target.value })} />
             <label>Company:</label>
             <input type="text" value={newApplication.company} onChange={(e) => setNewApplication({ ...newApplication, company: e.target.value })} />
             <label>Location:</label>
@@ -152,14 +299,23 @@ const ApplicationTracker: React.FC = () => {
             <label>Date Submitted:</label>
             <input type="date" value={newApplication.submittedDate} onChange={(e) => setNewApplication({ ...newApplication, submittedDate: e.target.value })} />
             <label>Status:</label>
-            <select value={newApplication.status} onChange={(e) => setNewApplication({ ...newApplication, status: e.target.value })}>
-              <option value="Applied">Applied</option>
-              <option value="Interviewing">Interviewing</option>
+            <select
+              value={newApplication.status}
+              onChange={(e) =>
+                setNewApplication({
+                  ...newApplication,
+                  status: e.target.value as "Application Sent" | "Interview" | "Offer" | "Application Rejected" | "Response",
+                })
+              }
+            >
+              <option value="Application Sent">Applied</option>
+              <option value="Application Rejected">Interviewing</option>
               <option value="Offer">Offer</option>
-              <option value="Rejected">Rejected</option>
+              <option value="Interview">Rejected</option>
+              <option value="Response">Response</option>
             </select>
             <label>Notes:</label>
-            <textarea value={newApplication.notes} onChange={(e) => setNewApplication({ ...newApplication, notes: e.target.value })}></textarea>
+            <textarea value={newApplication.description} onChange={(e) => setNewApplication({ ...newApplication, description: e.target.value })}></textarea>
             <button onClick={handleSaveApplication}>Save</button>
             <button onClick={() => setIsModalOpen(false)}>Cancel</button>
           </div>

@@ -14,6 +14,7 @@ const App: React.FC = () => {
   const [accessToken, setAccessToken] = useState<string>("");
   const [refreshToken, setRefreshToken] = useState<string>("");
   const [experiences, setExperiences] = useState<Experience[]>([]);
+  const [applications, setApplications] = useState<Application[]>([]);
 
   useEffect(() => {
     const ping = async () => {
@@ -120,7 +121,7 @@ const App: React.FC = () => {
           } />
           <Route path="/experience" element={<ExperienceArchive experiences={experiences} setExperiences={setExperiences} />} />
           <Route path="/job-finder" element={<JobFinder />} />
-          <Route path="/application-tracker" element={<ApplicationTracker />} />
+          <Route path="/application-tracker" element={<ApplicationTracker applications={applications} setApplications={setApplications}/>} />
           { }
           <Route
             path="/login"

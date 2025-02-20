@@ -19,3 +19,17 @@ type Experience = {
   userId: number;
   user?: User;
 }
+
+type Application = {
+  id: number;
+  title: string;
+  company: string;
+  status: "Application Sent" | "Interview" | "Offer" | "Application Rejected" | "Response";
+  jobType: "Internship" | "Co-op" | "Full-Time" | "Part-Time" | "Program";
+  location: string;
+  submittedDate: DateTime;
+  description: string;
+  userId?: number;
+  resumeId?: number | null;
+  user?: User;
+}

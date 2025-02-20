@@ -26,6 +26,7 @@ urlpatterns = [
     path('applications/<int:pk>/', GetApplicationById.as_view(), name='get-application-by-id'),
     path('create-application/', CreateApplication.as_view(), name='create-application'),
     path('update-application/<int:pk>/', UpdateApplication.as_view(), name='update-application'),
+    path('delete-application/<int:pk>/', DeleteApplication.as_view(), name='delete-application'),
 
     path('ping/', Ping.as_view(), name='ping'),
 ]

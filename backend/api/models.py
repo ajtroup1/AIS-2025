@@ -66,5 +66,5 @@ class Application(models.Model):
     submitted_date = models.DateTimeField()
     description = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    resume_id = models.ForeignKey(Resume, on_delete=models.CASCADE)
+    resume_id = models.ForeignKey(Resume, on_delete=models.CASCADE, null=True, blank=True)
 
