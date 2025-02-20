@@ -128,6 +128,11 @@ const ResumeArchive: React.FC = () => {
                   type="file"
                   onChange={handleResumeFileChange}
                 />
+                {resumeFile && (
+                  <div>
+                    <p>Current file: {resumeFile.name}</p>
+                  </div>
+                )}
                 <button onClick={handleSaveResume}>
                   {editResumeId !== null ? "Update" : "Save"}
                 </button>

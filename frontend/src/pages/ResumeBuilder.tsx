@@ -41,11 +41,15 @@ const ResumeBuilder: React.FC = () => {
             />
           </div>
 
-          {isSearching && <p>Searching for the best resume tips...</p>}
-
+          {isSearching && (
+            <div className="loadingSpinner">
+              <div className="spinner"></div>
+              <p>Searching for the best resume tips...</p>
+            </div>
+          )}
           {topResults.length > 0 && (
             <div className="resultsSection">
-              <h2>Top 5 Resume Tips for This Job:</h2>
+              <h2>Top 3 Experiences for This Job:</h2>
               <ul>
                 {topResults.map((result, index) => (
                   <li key={index}>{result}</li>

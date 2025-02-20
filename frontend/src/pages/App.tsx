@@ -14,6 +14,7 @@ const App: React.FC = () => {
   const [username, setUsername] = useState(""); 
 
 
+  
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/login");
@@ -34,7 +35,6 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-      {}
       {isLoggedIn && (
         <header className="navbar">
           <nav className="nav-links">
