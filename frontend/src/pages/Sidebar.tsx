@@ -6,14 +6,11 @@ type SidebarProps = {
   onEditExperiences: () => void;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ onUploadResume, onEditExperiences }) => {
+const Sidebar: React.FC<SidebarProps> = ({ onUploadResume}) => {
   return (
     <div className="sidebar">
       <button className="sidebar-button" onClick={onUploadResume}>
         Upload Resume
-      </button>
-      <button className="sidebar-button" onClick={onEditExperiences}>
-        Edit Experiences
       </button>
     </div>
   );

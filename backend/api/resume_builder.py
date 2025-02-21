@@ -78,7 +78,7 @@ def generate_resume(access_token, position):
     model = SentenceTransformer("sentence-transformers/msmarco-MiniLM-L6-cos-v5")
 
     # Encode job posting and experiences
-    job_embedding = model.encode(job_posting, convert_to_tensor=True)
+    job_embedding = model.encode(position, convert_to_tensor=True)
     experience_embeddings = model.encode([exp["exp_data"] for exp in transformed], convert_to_tensor=True)
 
     # Compute similarity scores

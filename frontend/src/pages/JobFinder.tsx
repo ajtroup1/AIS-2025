@@ -21,7 +21,7 @@ const JobFinder: React.FC = () => {
   const [jobs, setJobs] = useState<JobEntry[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<JobEntry[]>([]);
 
-  // Initialize jobs and filteredJobs
+
   useEffect(() => {
     if (jobs.length === 0) {
       setJobs([]);

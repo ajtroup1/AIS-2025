@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "../css/ResumeBuilder.css";
+import Cookies from "js-cookie";
 
 const ResumeBuilder: React.FC = () => {
   const [jobDescription, setJobDescription] = useState<string>("");
-  const [isSearching, setIsSearching] = useState<boolean>(false);
-  const [topResults, setTopResults] = useState<string[]>([]);
+  const [isSearching, setIsSearching] = useState<boolean>(false)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setJobDescription(e.target.value);
@@ -22,6 +22,29 @@ const ResumeBuilder: React.FC = () => {
       }, 2000);
     }
   };
+
+  const handleGenResume = async () => {
+    setIsSearching(true);
+    const response = await fetch("http://127.0.0.1:8000/api/generate-resume/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${Cookies.get("accessToken")}`,
+      },
+      body: JSON.stringify({ position: jobDescription }),
+    });
+
+    const data = await response.json();
+
+    if (response.status === 200) {
+      alert(`Resume generated successfully at "${data.doc_url}"!`);
+      setIsSearching(false);
+      return
+    }
+
+    alert(`Failed to generate resume: ${data.error}`)
+    setIsSearching(false);
+  }
 
   return (
     <div className="container">
@@ -41,20 +64,12 @@ const ResumeBuilder: React.FC = () => {
             />
           </div>
 
+          <button onClick={handleGenResume}>Create a resume</button>
+
           {isSearching && (
             <div className="loadingSpinner">
               <div className="spinner"></div>
-              <p>Searching for the best resume tips...</p>
-            </div>
-          )}
-          {topResults.length > 0 && (
-            <div className="resultsSection">
-              <h2>Top 3 Experiences for This Job:</h2>
-              <ul>
-                {topResults.map((result, index) => (
-                  <li key={index}>{result}</li>
-                ))}
-              </ul>
+              <p>Generating a resume for you...</p>
             </div>
           )}
         </div>
