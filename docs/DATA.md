@@ -74,7 +74,7 @@ erDiagram
     USER ||--o{ EXPERIENCE : "has"
     USER ||--o{ RESUME : "has"
     USER ||--o{ APPLICATION : "has"
-    USER ||--|{ PROFILE: "has"
+    USER ||--|| PROFILE: "has"
     EXPERIENCE ||--o{ RES_EXP : "appears on"
     RESUME ||--|{ RES_EXP : "contains"
     RESUME ||--o{ APPLICATION : "used in"
@@ -94,7 +94,7 @@ classDiagram
         +updateProfile(newEmail: VARCHAR): void
     }
 
-    class Profile {
+    class PROFILE {
         +VARCHAR fullName
         +VARCHAR email
         +VARCHAR phone
