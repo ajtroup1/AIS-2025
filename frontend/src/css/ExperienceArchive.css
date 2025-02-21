@@ -3,10 +3,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-grow;
-    min-height: 100vh;
-    padding: 20px;
     box-sizing: border-box;
-    background-color: #f9f9f9;
+    background-color: white; /* Ensures a consistent white background */
     font-family: Arial, sans-serif;
 }
 
@@ -205,3 +203,23 @@
         width: 90%;
     }
 }
+
+.actionButtons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .actionButtons button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .actionButtons button:hover {
+    background-color: #0056b3;
+  }
