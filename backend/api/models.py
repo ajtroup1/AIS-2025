@@ -23,6 +23,7 @@ class Profile(models.Model):
     full_name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     phone = models.CharField(max_length=12)
+    website = models.CharField(max_length=200)
     latest_edu_name = models.CharField(max_length=200)
     lastest_edu_from_date = models.DateField()
     latest_edu_desc = models.TextField()
@@ -49,6 +50,7 @@ class Experience(models.Model):
     to_date = models.DateField()
     location = models.CharField(max_length=200)
     description = models.TextField()
+    skills = models.JSONField(default=list, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="experiences")
 
 # Associative entity between Resume and Experience
