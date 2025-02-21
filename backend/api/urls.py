@@ -22,6 +22,7 @@ urlpatterns = [
     path('resumes/<int:pk>/', GetResumeById.as_view(), name='get-resume-by-id'),
     path('create-resume/', CreateResume.as_view(), name='create-resume'),
     path('update-resume/<int:pk>/', UpdateResume.as_view(), name='update-resume'),
+    path('delete-resume/<int:pk>/', DeleteResume.as_view(), name='delete-resume'),
 
     #Experiences
     path('experiences/', GetAllExperiences.as_view(), name='experiences'),

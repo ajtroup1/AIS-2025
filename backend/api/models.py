@@ -24,8 +24,10 @@ class Profile(models.Model):
     email = models.CharField(max_length=200)
     phone = models.CharField(max_length=12)
     website = models.CharField(max_length=200)
+    linkedin = models.CharField(max_length=200)
     latest_edu_name = models.CharField(max_length=200)
-    lastest_edu_from_date = models.DateField()
+    latest_edu_from_date = models.DateField()
+    latest_edu_to_date = models.DateField()
     latest_edu_desc = models.TextField()
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")  # Using OneToOneField
 
