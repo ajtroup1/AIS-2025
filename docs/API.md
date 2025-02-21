@@ -12,10 +12,10 @@ This document is version `1.0`
 
 
 ## Overview
-The API for ___ is implemented in Python's [Django](https://www.djangoproject.com/). This allows for flexible & speedy development, readable & maintainable code, and an [ORM](https://www.freecodecamp.org/news/what-is-an-orm-the-meaning-of-object-relational-mapping-database-tools/) database architecture. Django is also extremely powerful out-of-the-box, with features such as: a built-in admin portal, simple model creation and native migration support, and versatile view and routing tools. 
+The API for MAP is implemented in Python's [Django](https://www.djangoproject.com/). This allows for flexible & speedy development, readable & maintainable code, and an [ORM](https://www.freecodecamp.org/news/what-is-an-orm-the-meaning-of-object-relational-mapping-database-tools/) database architecture. Django is also extremely powerful out-of-the-box, with features such as: a built-in admin portal, simple model creation and native migration support, and versatile view and routing tools. 
 
 ## Authorization
-____'s api uses a JWT authentication system for all requests. JWT authentication uses a flow where you initially authenticate upon login, then refresh your access to the api if needed. To further learn about JWT, see the [resources below](#jwt-resources). 
+MAP's api uses a JWT authentication system for all requests. JWT authentication uses a flow where you initially authenticate upon login, then refresh your access to the api if needed. To further learn about JWT, see the [resources below](#jwt-resources). 
 
 **Note that the access and refresh tokens in the examples are NOT valid and will not work for you, you must generate your own**
 
