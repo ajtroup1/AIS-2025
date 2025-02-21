@@ -1,12 +1,22 @@
+body,
+html {
+  width: 100%;
+  min-height: 100vh;
+  font-family: Tahoma, Verdana, sans-serif;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+}
+
 .head {
   position: relative;
   text-align: center;
   height: auto;
   padding-top: 5px;
   color: #0071ce;
-  text-align: center;
   font-family: Tahoma, Verdana, sans-serif;
   font-weight: bold;
+  background-color: white;
 }
 
 .headerText {
@@ -17,21 +27,47 @@
 }
 
 .container {
-  padding-top: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f5f5f5;
+  background-color: white;
+}
+
+.form-container {
+  display: flex;
+  justify-content: space-between;
+  /* Space out the columns */
+  width: 80%;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  /* Adjust width of each column */
+}
+
+.section {
+  margin-bottom: 30px;
+  /* Space between sections */
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #0071ce;
 }
 
 .textBox1,
 .textBox2 {
   padding: 10px;
-  background-color: transparent;
+  background-color: white;
   height: 80px;
-  width: 50%;
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 .label {
@@ -39,12 +75,10 @@
   margin-bottom: 8px;
   font-size: 16px;
   color: #0071ce;
-  padding-right: 40%;
   font-family: Tahoma, Verdana, sans-serif;
   font-weight: bold;
 }
 
-/* New class for input text visibility */
 .visible-input {
   height: 40px;
   width: 100%;
@@ -54,9 +88,9 @@
   padding-left: 10px;
   background-color: white;
   margin: 0 auto;
-  color: #333; /* Dark text color */
+  color: #333;
   font-family: Tahoma, Verdana, sans-serif;
-  font-size: 16px; /* Adjust font size for visibility */
+  font-size: 16px;
 }
 
 .Signinbutton {
@@ -84,16 +118,17 @@ p {
   font-family: Tahoma, Verdana, sans-serif;
 }
 
-/* Class for error message styling */
 .error-message {
   color: red;
   font-size: 14px;
   font-family: Tahoma, Verdana, sans-serif;
 }
 
-/* Class for success message styling */
 .success-message {
   color: green;
   font-size: 14px;
-  font-family: Tahoma, Verdana, sans-serif;
+}
+
+textarea.visible-input {
+  resize: none;
 }

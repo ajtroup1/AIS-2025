@@ -1,9 +1,11 @@
 .applicationTracker {
   text-align: center;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: white;
+  /* Consistent white background */
   min-height: 100vh;
   font-family: Arial, sans-serif;
+
 }
 
 h1 {

@@ -5,20 +5,32 @@
 }
 
 
-body, html {
+body,
+html {
   width: 100%;
-  min-height: 100vh; /* Use min-height instead of height */
+  min-height: 100vh;
+  /* Use min-height instead of height */
   font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  background-color: white;
   display: flex;
   flex-direction: column;
 }
 
+
+h1 {
+  margin-top: auto;
+  /* Set a consistent top margin */
+  text-align: center;
+  color: #333;
+}
+
 .container {
   width: 100%;
-  min-height: 100vh; /* Use min-height to allow expansion */
+  min-height: 100vh;
+  /* Use min-height to allow expansion */
   display: flex;
   flex-direction: column;
+  background-color: white;
 }
 
 .navbar {
@@ -52,13 +64,19 @@ body, html {
 }
 
 .content {
-  flex-grow: 1; /* Allow content to grow */
+  flex-grow: 1;
+  /* Allow content to grow */
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px; /* Add padding for spacing */
+  padding: 20px;
+  /* Add padding for spacing */
   background-color: white;
-  width: 100%; /* Ensure content takes full width */
-  max-width: 1200px; /* Optional: Limit max width for better readability */
-  margin: 0 auto; /* Center content horizontally */
+  width: 100%;
+  /* Ensure content takes full width */
+  max-width: 1200px;
+  /* Optional: Limit max width for better readability */
+  margin: 0 auto;
+  /* Center content horizontally */
+  padding-top: 5%;
 }
