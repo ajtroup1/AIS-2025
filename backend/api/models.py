@@ -18,6 +18,17 @@ class Status(models.TextChoices):
     INTERVIEW = "Interview", "Interview"
     OFFER = "Offer", "Offer"
 
+# Profile model:
+class Profile(models.Model):
+    full_name = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    phone = models.CharField(max_length=12)
+    latest_edu_name = models.CharField(max_length=200)
+    lastest_edu_from_date = models.DateField()
+    latest_edu_desc = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profiles")
+
+
 # Resume model:
 class Resume(models.Model):
     file_path = models.FileField(upload_to="resumes/")
@@ -34,8 +45,8 @@ class Experience(models.Model):
         choices = JobType.choices,
         default=JobType.INTERNSHIP
     )
-    from_date = models.DateTimeField()
-    to_date = models.DateTimeField()
+    from_date = models.DateField()
+    to_date = models.DateField()
     location = models.CharField(max_length=200)
     description = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="experiences")
@@ -63,7 +74,7 @@ class Application(models.Model):
         default=JobType.INTERNSHIP
     )
     location = models.CharField(max_length=200)
-    submitted_date = models.DateTimeField()
+    submitted_date = models.DateField()
     description = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     resume_id = models.ForeignKey(Resume, on_delete=models.CASCADE, null=True, blank=True)

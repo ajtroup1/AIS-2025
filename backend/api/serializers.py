@@ -78,6 +78,11 @@ class BaseSerializer(serializers.ModelSerializer):
         instance.delete()
         return instance
 
+# Profile 
+class ProfileSerializer (BaseSerializer):
+    class Meta:
+        model = Profile
+        fields = "__all__"
 # Resume
 class ResumeSerializer (BaseSerializer):
         class Meta:

@@ -7,9 +7,15 @@ urlpatterns = [
     path('register/', Register.as_view(), name='register'),
     path("refresh/", RefreshTokenView.as_view(), name="token_refresh"),
     path("protected/", protected_view, name="protected"),
-    path('update-profile/', UpdateUser.as_view(), name='update-profile'),
-    path('delete-profile/', DeleteUser.as_view(), name='delete-profile'),
+    path('update-user/', UpdateUser.as_view(), name='update-user'),
+    path('delete-user/', DeleteUser.as_view(), name='delete-user'),
     path('users/', GetAllUsers.as_view(), name='users'),
+
+    # Profiles
+    path('profiles/', GetAllProfiles.as_view(), name='profiles'),
+    path('profiles/<int:pk>/', GetProfileById.as_view(), name='get-profile-by-id'),
+    path('create-profile/', CreateProfile.as_view(), name='create-profile'),
+    path('update-profile/<int:pk>/', UpdateProfile.as_view(), name='update-profile'),
 
     # Resumes
     path('resumes/', GetAllResumes.as_view(), name='resumes'),

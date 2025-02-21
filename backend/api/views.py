@@ -122,64 +122,6 @@ class Ping(APIView):
     def get(self, request):
         return Response({"message": "pong"})
         
-# RESUMES
-# class GetAllResumes(APIView):
-#     # Ensure user is authenticated
-#     permission_classes = [IsAuthenticated]
-
-#     def get(self, request):
-#         # Retrieve all resumes associated with the authenticated user
-#         resumes = Resume.objects.filter(user=request.user)
-
-#         # Serialize the resumes data
-#         serializer = ResumeSerializer(resumes, many=True)
-
-#         # Return the serialized resume data as response
-#         return Response(serializer.data)
-
-
-# class GetResumeById(APIView):
-#     # Ensure user is authenticated
-#     permission_classes = [IsAuthenticated]
-
-#     def get(self, request, pk):
-#         # Retrieve the resume by its ID and ensure it's owned by the authenticated user
-#         try:
-#             resume = Resume.objects.get(user_id=request.user, pk=pk)
-#         except Resume.DoesNotExist:
-#             return Response({"detail": "Resume not found."}, status=status.HTTP_404_NOT_FOUND)
-
-#         # Serialize the resume data
-#         serializer = ResumeSerializer(resume)
-
-#         # Return the serialized resume data as response
-#         return Response(serializer.data)
-
-
-# class CreateResume(APIView):
-#     # Ensure user is authenticated
-#     permission_classes = [IsAuthenticated]
-
-#     def post(self, request):
-#         serializer = ResumeSerializer(data=request.data, context={"request": request})
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         else:
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# class UpdateResume(APIView):
-#     # Ensure user is authenticated
-#     permission_classes = [IsAuthenticated]
-
-#     def put(self, request, pk):
-#         resume = Resume.objects.get(pk=pk)
-#         serializer = ResumeSerializer(resume, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         else:
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -238,11 +180,13 @@ def create_api_views(model, serializer):
     return GetAllObjects, GetObjectById, CreateObject, UpdateObject, DeleteObject
 
 # Dynamically create API views for each model
+ProfileViews = create_api_views(Profile, ProfileSerializer)
 ResumeViews = create_api_views(Resume, ResumeSerializer)
 ExperienceViews = create_api_views(Experience, ExperienceSerializer)
 ApplicationViews = create_api_views(Application, ApplicationSerializer)
 
 # Assigning dynamically generated views to class names
+GetAllProfiles, GetProfileById, CreateProfile, UpdateProfile, DeleteProfile = ProfileViews
 GetAllResumes, GetResumeById, CreateResume, UpdateResume, DeleteResume = ResumeViews
 GetAllExperiences, GetExperienceById, CreateExperience, UpdateExperience, DeleteExperience = ExperienceViews
 GetAllApplications, GetApplicationById, CreateApplication, UpdateApplication, DeleteApplication = ApplicationViews
