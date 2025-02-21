@@ -4,14 +4,14 @@ import "../css/ResumeArchive.css";
 type ResumeEntry = {
   id: number;
   year: number;
-  resumeFile: File | null;  // Changed from resumeText to resumeFile
+  resumeFile: File | null;
 };
 
 const ResumeArchive: React.FC = () => {
   const [resumes, setResumes] = useState<ResumeEntry[]>([]);
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [resumeFile, setResumeFile] = useState<File | null>(null); // New state for file input
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [resumeYear, setResumeYear] = useState<number>(new Date().getFullYear());
   const [editResumeId, setEditResumeId] = useState<number | null>(null);
 
@@ -25,7 +25,7 @@ const ResumeArchive: React.FC = () => {
     }
   };
 
-  const handleResumeYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleResumeYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setResumeYear(parseInt(e.target.value, 10));
   };
 
@@ -115,24 +115,23 @@ const ResumeArchive: React.FC = () => {
             <div className="modal">
               <div className="modalContent">
                 <h2>{editResumeId !== null ? "Edit Resume" : "Add Resume"}</h2>
+                
+                {/* Year Dropdown Selector */}
                 <label>Year: </label>
-                <input
-                  type="number"
-                  value={resumeYear}
-                  onChange={handleResumeYearChange}
-                  min={2000}
-                  max={new Date().getFullYear()}
-                />
+                <select value={resumeYear} onChange={handleResumeYearChange}>
+                  {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+
+                {/* File Upload */}
                 <label>Resume File: </label>
-                <input
-                  type="file"
-                  onChange={handleResumeFileChange}
-                />
-                {resumeFile && (
-                  <div>
-                    <p>Current file: {resumeFile.name}</p>
-                  </div>
-                )}
+                <input type="file" onChange={handleResumeFileChange} />
+                {resumeFile && <p>Current file: {resumeFile.name}</p>}
+
+                {/* Buttons */}
                 <button onClick={handleSaveResume}>
                   {editResumeId !== null ? "Update" : "Save"}
                 </button>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../css/ExperienceArchive.css";
-import Sidebar from "./Sidebar";
 
 type ExperienceEntry = {
   id: number;
@@ -30,13 +29,7 @@ const ExperienceArchive: React.FC = () => {
 
   const handleAddNew = () => {
     setIsExperienceModalOpen(true);
-    setNewEntry({
-      id: 0,
-      jobTitle: "",
-      firm: "",
-      duration: "",
-      location: "",
-    });
+    setNewEntry({ id: 0, jobTitle: "", firm: "", duration: "", location: "" });
   };
 
   const handleSaveNewEntry = () => {
@@ -46,13 +39,9 @@ const ExperienceArchive: React.FC = () => {
     }
 
     if (newEntry.id === 0) {
-      const updatedEntries = [...entries, { ...newEntry, id: entries.length + 1 }];
-      setEntries(updatedEntries);
+      setEntries([...entries, { ...newEntry, id: entries.length + 1 }]);
     } else {
-      const updatedEntries = entries.map((entry) =>
-        entry.id === newEntry.id ? newEntry : entry
-      );
-      setEntries(updatedEntries);
+      setEntries(entries.map((entry) => (entry.id === newEntry.id ? newEntry : entry)));
     }
 
     setIsExperienceModalOpen(false);
@@ -67,8 +56,7 @@ const ExperienceArchive: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    const updatedEntries = entries.filter((entry) => entry.id !== id);
-    setEntries(updatedEntries);
+    setEntries(entries.filter((entry) => entry.id !== id));
   };
 
   const handleUploadResume = () => {
@@ -83,7 +71,6 @@ const ExperienceArchive: React.FC = () => {
 
   const handleSaveResume = () => {
     if (resumeFile) {
-      console.log("Resume file:", resumeFile);
       alert(`Resume "${resumeFile.name}" uploaded. Replace with API call.`);
       setIsResumeModalOpen(false);
       setResumeFile(null);
@@ -94,7 +81,14 @@ const ExperienceArchive: React.FC = () => {
 
   return (
     <div className="experienceArchive">
-      <Sidebar onUploadResume={handleUploadResume} onEditExperiences={handleAddNew} />
+      <h1>Experience Archive</h1>
+
+      {/* Action Buttons */}
+      <div className="actionButtons">
+        <button onClick={handleUploadResume}>Upload Resume</button>
+        <button onClick={handleAddNew}>Add Experience</button>
+      </div>
+
 
       <div className="searchBar">
         <input
@@ -104,8 +98,8 @@ const ExperienceArchive: React.FC = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <button onClick={handleSearch}>Search</button>
-        <button onClick={handleAddNew}>Add New</button>
       </div>
+
 
       <table className="experienceTable">
         <thead>
@@ -114,7 +108,7 @@ const ExperienceArchive: React.FC = () => {
             <th>Company</th>
             <th>Duration</th>
             <th>Location</th>
-            <th>Description</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -132,6 +126,7 @@ const ExperienceArchive: React.FC = () => {
           ))}
         </tbody>
       </table>
+
 
       {isExperienceModalOpen && (
         <div className="modal">

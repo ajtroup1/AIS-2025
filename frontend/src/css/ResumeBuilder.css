@@ -18,13 +18,13 @@
   
   .resumeBuilder {
     width: 100%;
-    padding: 20px;
+    /* padding: 20px; */
     font-family: Arial, sans-serif;
   }
   
   .resumeBuilder h1 {
     text-align: center;
-    color: #0d47a1;
+    color: black;
     margin-bottom: 20px;
   }
   
@@ -55,7 +55,7 @@
   }
   
   .resultsSection h2 {
-    color: #0d47a1;
+    color: black;
     margin-bottom: 10px;
   }
   

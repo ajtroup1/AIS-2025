@@ -1,12 +1,21 @@
+body, html {
+  width: 100%;
+  min-height: 100vh;
+  font-family: Tahoma, Verdana, sans-serif;
+  background-color: white; /* Set background to white */
+  margin: 0;
+  padding: 0;
+}
+
 .head {
   position: relative;
   text-align: center;
   height: auto;
   padding-top: 5px;
   color: #0071ce;
-  text-align: center;
   font-family: Tahoma, Verdana, sans-serif;
   font-weight: bold;
+  background-color: white; /* Ensure white background */
 }
 
 .headerText {
@@ -17,19 +26,18 @@
 }
 
 .container {
-  padding-top: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f5f5f5;
+  background-color: white; /* Change to white */
 }
 
 .textBox1,
 .textBox2 {
   padding: 10px;
-  background-color: transparent;
+  background-color: white; /* Change to white */
   height: 80px;
   width: 50%;
 }
@@ -44,7 +52,6 @@
   font-weight: bold;
 }
 
-/* New class for input text visibility */
 .visible-input {
   height: 40px;
   width: 100%;
@@ -54,9 +61,9 @@
   padding-left: 10px;
   background-color: white;
   margin: 0 auto;
-  color: #333; /* Dark text color */
+  color: #333;
   font-family: Tahoma, Verdana, sans-serif;
-  font-size: 16px; /* Adjust font size for visibility */
+  font-size: 16px;
 }
 
 .Signinbutton {
@@ -84,14 +91,12 @@ p {
   font-family: Tahoma, Verdana, sans-serif;
 }
 
-/* Class for error message styling */
 .error-message {
   color: red;
   font-size: 14px;
   font-family: Tahoma, Verdana, sans-serif;
 }
 
-/* Class for success message styling */
 .success-message {
   color: green;
   font-size: 14px;
