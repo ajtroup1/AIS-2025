@@ -18,6 +18,7 @@ Documentation is segregated into separate files:
 - [API](./docs/API.md)
 - [Frontend](./docs/FRONTEND.md)
 - [Data Diagrams](./docs/DATA.md)
+- [Quick Start](./docs/QUICK_START.md)
 
 ## App Components
 
