@@ -2,7 +2,22 @@
 
 1. Ensure you are in the root folder ex. `C:\things-and-such\AIS-2025>`
 
-2. Run `python backend/manage.py migrate` to ensure the data is up to date in the database
+2. Navigate into backend and ensure migration then install requirements
+```bash
+$ cd backend
+```
+
+```bash
+$ python manage.py migrate
+```
+
+```bash
+$ pip install -r requirements.txt
+```
+
+```bash
+$ cd ..
+```
 
 3. Navigate into `frontend/` and run `npm i`. Remember to cd back out into the root directory
 ```bash
