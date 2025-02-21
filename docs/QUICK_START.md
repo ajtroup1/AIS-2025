@@ -2,12 +2,30 @@
 
 1. Ensure you are in the root folder ex. `C:\things-and-such\AIS-2025>`
 
-2. Run `python manage.py migrate` to ensure the data is up to date in the database
+2. Run `python backend/manage.py migrate` to ensure the data is up to date in the database
 
-3. Run `.\run.bat` to boot up both servers (frontend and backend)
+3. Navigate into `frontend/` and run `npm i`. Remember to cd back out into the root directory
+```bash
+$ cd frontend
+```
+
+```bash
+$  npm i
+```
+
+```bash
+ $ cd ..
+```
+
+
+4. Run `.\run.bat` to boot up both servers (frontend and backend)
   - This automatically opens 2 terminals to manage both servers
 
-4. The second terminal should say something like:
+```bash
+$ .\\run.bat
+```
+
+5. The second terminal should say something like:
 ```bash
   VITE v6.0.11  ready in 269 ms
 
@@ -17,4 +35,4 @@
 ```
   - Hold CTRL and click the localhost link
 
-5. Now you should be on the web client with a running backend server automatically!
+6. Now you should be on the web client with a running backend server automatically!
