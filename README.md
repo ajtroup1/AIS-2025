@@ -30,5 +30,6 @@ Documentation is segregated into separate files:
   - Read, filter, and edit applications in a clean table format
 - Resume Builder:
   - Uses a [Hugging Face](https://huggingface.co/) AI model to organize your stored work experiences into a resume that is tailored to a job position
+  - Send a job description / posting that you copied to the backend to generate a custom resume. The path for this generated resume will be returned to you for easy access
 - JWT Authentication:
   - Leverages Django to enforce JWT and best security practices
