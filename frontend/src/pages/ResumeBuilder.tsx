@@ -17,7 +17,6 @@ const ResumeBuilder: React.FC = () => {
         const results = [
           "lll"
         ];
-        setTopResults(results);
         setIsSearching(false);
       }, 2000);
     }
