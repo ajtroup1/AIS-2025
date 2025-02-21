@@ -74,7 +74,7 @@ erDiagram
     USER ||--o{ EXPERIENCE : "has"
     USER ||--o{ RESUME : "has"
     USER ||--o{ APPLICATION : "has"
-    USER ||--||{ PROFILE: "has"
+    USER ||--|{ PROFILE: "has"
     EXPERIENCE ||--o{ RES_EXP : "appears on"
     RESUME ||--|{ RES_EXP : "contains"
     RESUME ||--o{ APPLICATION : "used in"
@@ -164,6 +164,7 @@ classDiagram
     USER "1" -- "0..*" EXPERIENCE : has
     USER "1" -- "0..*" RESUME : has
     USER "1" -- "0..*" APPLICATION : has
+    USER "1" -- "1..1" PROFILE: has
     EXPERIENCE "1" -- "0..*" RES_EXP : appears on
     RESUME "1" -- "1..*" RES_EXP : contains
     RESUME "1" -- "0..*" APPLICATION : used in
