@@ -164,7 +164,7 @@ classDiagram
     USER "1" -- "0..*" EXPERIENCE : has
     USER "1" -- "0..*" RESUME : has
     USER "1" -- "0..*" APPLICATION : has
-    USER "1" -- "1..1" PROFILE: has
+    USER "1" -- "1" PROFILE: has
     EXPERIENCE "1" -- "0..*" RES_EXP : appears on
     RESUME "1" -- "1..*" RES_EXP : contains
     RESUME "1" -- "0..*" APPLICATION : used in
