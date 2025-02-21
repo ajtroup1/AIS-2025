@@ -37,7 +37,7 @@ $  npm i
   - This automatically opens 2 terminals to manage both servers
 
 ```bash
-$ .\\run.bat
+$ .\run.bat
 ```
 
 5. The second terminal should say something like:
