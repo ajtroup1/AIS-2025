@@ -49,6 +49,7 @@ class Experience(models.Model):
     to_date = models.DateField()
     location = models.CharField(max_length=200)
     description = models.TextField()
+    skills = models.JSONField(default=list, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="experiences")
 
 # Associative entity between Resume and Experience
