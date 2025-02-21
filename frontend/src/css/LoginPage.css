@@ -2,7 +2,7 @@ body, html {
   width: 100%;
   min-height: 100vh;
   font-family: Tahoma, Verdana, sans-serif;
-  background-color: white; /* Set background to white */
+  background-color: white;
   margin: 0;
   padding: 0;
 }
@@ -15,7 +15,7 @@ body, html {
   color: #0071ce;
   font-family: Tahoma, Verdana, sans-serif;
   font-weight: bold;
-  background-color: white; /* Ensure white background */
+  background-color: white;
 }
 
 .headerText {
@@ -31,15 +31,39 @@ body, html {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: white; /* Change to white */
+  background-color: white;
+}
+
+.form-container {
+  display: flex;
+  justify-content: space-between; /* Space out the columns */
+  width: 80%;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  width: 48%; /* Adjust width of each column */
+}
+
+.section {
+  margin-bottom: 30px; /* Space between sections */
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #0071ce;
 }
 
 .textBox1,
 .textBox2 {
   padding: 10px;
-  background-color: white; /* Change to white */
+  background-color: white;
   height: 80px;
-  width: 50%;
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 .label {
@@ -47,7 +71,6 @@ body, html {
   margin-bottom: 8px;
   font-size: 16px;
   color: #0071ce;
-  padding-right: 40%;
   font-family: Tahoma, Verdana, sans-serif;
   font-weight: bold;
 }
@@ -100,5 +123,8 @@ p {
 .success-message {
   color: green;
   font-size: 14px;
-  font-family: Tahoma, Verdana, sans-serif;
+}
+
+textarea.visible-input {
+  resize: none;
 }
