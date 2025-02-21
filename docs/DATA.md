@@ -12,9 +12,21 @@ This file is responsible for representing the data structures used in ____. Belo
 erDiagram
     USER {
         VARCHAR username NOT NULL PK
-        VARCHAR username NOT NULL PK
         VARCHAR password NOT NULL
         VARCHAR email
+    }
+    PROFILE {
+        VARCHAR fullname NOT NULL
+        VARCHAR email NOT NULL
+        VARCHAR phone NOT NULL
+        VARCHAR website
+        VARCHAR linkedin
+        VARCHAR latest_edu_name
+        DATE latest_edu_from_date
+        DATE latest_edu_to_date
+        VARCHAR latest_edu_desc
+        INT user FK
+
     }
     EXPERIENCE{
         INT experience_id NOT NULL PK
@@ -62,6 +74,7 @@ erDiagram
     USER ||--o{ EXPERIENCE : "has"
     USER ||--o{ RESUME : "has"
     USER ||--o{ APPLICATION : "has"
+    USER ||--||{ PROFILE: "has"
     EXPERIENCE ||--o{ RES_EXP : "appears on"
     RESUME ||--|{ RES_EXP : "contains"
     RESUME ||--o{ APPLICATION : "used in"
@@ -79,6 +92,19 @@ classDiagram
         +logout(): void
         +signup(): void
         +updateProfile(newEmail: VARCHAR): void
+    }
+
+    class Profile {
+        +VARCHAR fullName
+        +VARCHAR email
+        +VARCHAR phone
+        +VARCHAR website
+        +VARCHAR linkedin
+        +VARCHAR latestEduName
+        +DATE latest_edu_from_date
+        +DATE latest_edu_to_date
+        +VARCHAR latest_edu_desc
+        +INT user FK
     }
 
     class EXPERIENCE {
