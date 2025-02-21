@@ -6,6 +6,7 @@ import JobFinder from "./JobFinder";
 import ApplicationTracker from "./ApplicationTracker";
 import LoginPage from "./LoginPage";
 import Cookies from "js-cookie";
+import Profile from "./Profile";
 
 const App: React.FC = () => {
   const navigate = useNavigate();
@@ -105,6 +106,7 @@ const App: React.FC = () => {
             <NavLink to="/experience"><button>My Experience Archive</button></NavLink>
             <NavLink to="/job-finder"><button>My Job Finder</button></NavLink>
             <NavLink to="/application-tracker"><button>My Application Tracker</button></NavLink>
+            <NavLink to="/profile"><button>My Profile</button></NavLink>
             <NavLink to="/login" onClick={handleLogout}><button>Logout</button></NavLink>
           </nav>
         </header>
@@ -122,7 +124,7 @@ const App: React.FC = () => {
           } />
           <Route path="/experience" element={<ExperienceArchive experiences={experiences} setExperiences={setExperiences} />} />
           <Route path="/job-finder" element={<JobFinder />} />
-          <Route path="/application-tracker" element={<ApplicationTracker applications={applications} setApplications={setApplications}/>} />
+          <Route path="/application-tracker" element={<ApplicationTracker applications={applications} setApplications={setApplications} />} />
           { }
           <Route
             path="/login"
@@ -134,6 +136,7 @@ const App: React.FC = () => {
               )
             }
           />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>
     </div>
