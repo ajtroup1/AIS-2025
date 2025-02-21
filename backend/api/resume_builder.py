@@ -104,8 +104,13 @@ def generate_resume(access_token, position):
 
     #method to write experience into the doc
     def addExperienceToDoc (expObj, doc):
-        from_date = datetime.strptime(expObj.get('from_date'), "%Y-%m-%d")        
-        to_date = datetime.strptime(expObj.get('to_date'), "%Y-%m-%d")
+        from_date = expObj.get('from_date')
+        to_date = expObj.get('to_date')
+        
+        if from_date:     
+            from_date = datetime.strptime(from_date, '%Y-%m-%d').strftime('%m/%d/%Y')
+        if to_date:     
+            to_date = datetime.strptime(to_date, '%Y-%m-%d').strftime('%m/%d/%Y')
 
         doc.add_heading((f"{expObj.get('job_title')} | {expObj.get('company')} "),level=3)
         expSection = doc.add_paragraph()
@@ -125,8 +130,20 @@ def generate_resume(access_token, position):
     doc.add_heading('Education',level=2)
     edu = doc.add_paragraph()
     edu.add_run(f"{profile.get("latest_edu_name")}\n").bold = True
-    edu.add_run(f"{profile.get("latest_edu_from_date")} - {profile.get("latest_edu_to_date")}").italic = True
-    edu.add_run(f"{profile.get("latest_edu_desc")}\n")
+
+    
+    edu_from_date = profile.get('latest_edu_from_date')
+    edu_to_date = profile.get('latest_edu_to_date')
+    
+    if edu_from_date:     
+        edu_from_date = datetime.strptime(edu_from_date, '%Y-%m-%d').strftime('%m/%d/%Y')
+    if edu_to_date:     
+        edu_to_date = datetime.strptime(edu_to_date, '%Y-%m-%d').strftime('%m/%d/%Y')
+ 
+    
+    edu.add_run(f"{edu_from_date} - {edu_to_date}").italic = True
+
+    edu.add_run(f"\n{profile.get("latest_edu_desc")}\n")
     # Working Experience Section
     doc.add_heading('Working Experiences', level=2)
     for i in sorted_by_date:
