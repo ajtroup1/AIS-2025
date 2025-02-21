@@ -142,7 +142,6 @@ def create_api_views(model, serializer):
 
     class GetObjectById(APIView):
         permission_classes = [IsAuthenticated]
-
         def get(self, request, pk):
             obj = get_object_or_404(model, user=request.user, pk=pk)
             serializer_instance = serializer(obj)

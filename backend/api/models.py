@@ -27,7 +27,7 @@ class Profile(models.Model):
     latest_edu_name = models.CharField(max_length=200)
     lastest_edu_from_date = models.DateField()
     latest_edu_desc = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profiles")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")  # Using OneToOneField
 
 
 # Resume model:
