@@ -142,14 +142,16 @@ class GenerateResume(APIView):
         
         # Save the document to a file (or cloud storage)
         doc_path = os.path.join(settings.MEDIA_ROOT, "resumes", f"{request.user.id}_resume.docx")
-        
+ 
         # Assuming `doc.save` saves the document to the given path (this depends on the library you're using)
         doc.save(doc_path)
+
+        doc_path = os.path.abspath(doc_path)
 
         # Return the file URL (could be a local URL or public URL if uploaded to cloud storage)
         file_url = os.path.join(settings.MEDIA_URL, "resumes", f"{request.user.id}_resume.docx")
         
-        return Response({"doc_url": file_url}, status=status.HTTP_200_OK)
+        return Response({"doc_url": doc_path}, status=status.HTTP_200_OK)
 
         
 class Ping(APIView):

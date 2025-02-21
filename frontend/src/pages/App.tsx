@@ -7,6 +7,8 @@ import ApplicationTracker from "./ApplicationTracker";
 import LoginPage from "./LoginPage";
 import Cookies from "js-cookie";
 import Profile from "./Profile";
+import ResumeArchive from "./ResumeArchive";
+import ResumeBuilder from "./ResumeBuilder";
 
 const App: React.FC = () => {
   const navigate = useNavigate();
@@ -18,26 +20,6 @@ const App: React.FC = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
 
-  useEffect(() => {
-    const ping = async () => {
-      const response = await fetch("http://127.0.0.1:8000/api/ping/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`,
-        },
-      });
-      if (response.status === 401) {
-        alert("Session expired. Please log in again.");
-        handleLogout();
-      }
-    }
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      navigate("/login"); // Redirect to login if no token
-    }
-
-  }, []);
 
   useEffect(() => {
     if (!isLoggedIn && Cookies.get("loggedIn") !== "true") {
@@ -96,16 +78,24 @@ const App: React.FC = () => {
     navigate("/login");
   }
 
+  const handleRegister = (username: string, password: string) => {
+    alert(`User ${username} registered successfully!`);
+    handleLogin(username, password);
+  };
+
   return (
     <div className="container">
       { }
       {isLoggedIn && (
         <header className="navbar">
           <nav className="nav-links">
-            <NavLink to="/"><button>My Home Page</button></NavLink>
-            <NavLink to="/experience"><button>My Experience Archive</button></NavLink>
-            <NavLink to="/job-finder"><button>My Job Finder</button></NavLink>
-            <NavLink to="/application-tracker"><button>My Application Tracker</button></NavLink>
+            <NavLink to="/"><button>Home Page</button></NavLink>
+            <NavLink to="/experience"><button>Experience Archive</button></NavLink>
+            <NavLink to="/job-finder"><button>Job Finder</button></NavLink>
+            <NavLink to="/application-tracker"><button>Application Tracker</button></NavLink>
+            <NavLink to="/resume-archive"><button>Resume Archive</button></NavLink>
+            <NavLink to="/resume-builder"><button>Resume Builder</button></NavLink>
+
             <NavLink to="/profile"><button>My Profile</button></NavLink>
             <NavLink to="/login" onClick={handleLogout}><button>Logout</button></NavLink>
           </nav>
@@ -137,6 +127,8 @@ const App: React.FC = () => {
             }
           />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/resume-archive" element={<ResumeArchive />} />
+          <Route path="/resume-builder" element={<ResumeBuilder />} />
         </Routes>
       </main>
     </div>

@@ -85,7 +85,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-
+          
           <div className="textBox2">
             <label className="label">Password</label>
             <input
