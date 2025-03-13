@@ -281,6 +281,7 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
     <div className="experienceArchive">
       <Sidebar onUploadResume={handleUploadResume} onEditExperiences={handleAddNew} />
 
+      <p className="expArchHeaderText">Experience Archive</p>
       <div className="searchBar">
         <input
           type="text"
@@ -316,8 +317,10 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
               <td><em>{normalizeDateTime(entry.fromDate)}</em> → <em>{normalizeDateTime(entry.toDate)}</em></td>
               {/* <td>{entry.fromDate} → {entry.toDate}</td> */}
               <td>
-                <button onClick={() => handleEdit(entry.id)}>Edit</button>
-                <button onClick={() => handleDelete(entry.id)}>Delete</button>
+                <div className="experienceActions">
+                  <button onClick={() => handleEdit(entry.id)}>Edit</button>
+                  <button onClick={() => handleDelete(entry.id)}>Delete</button>
+                </div>
               </td>
             </tr>
           ))}

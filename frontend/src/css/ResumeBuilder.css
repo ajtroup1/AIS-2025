@@ -1,31 +1,16 @@
-.container {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: white;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 .resumeBuilder {
   width: 100%;
   /* padding: 20px; */
   font-family: Arial, sans-serif;
+  text-align: center;
 }
 
 .resumeBuilder h1 {
   text-align: center;
-  color: black;
+  color: #333;
   margin-bottom: 20px;
+  font-size: 2.5rem;
+  font-weight: bold;
 }
 
 .searchSection {
@@ -33,21 +18,47 @@
 }
 
 .searchSection label {
-  font-size: 16px;
+  font-size: 1.1rem;
   margin-right: 10px;
-  color: black;
+  color: #555;
+  display: block;
+  margin-bottom: 5px;
 }
 
+.searchSection textarea,
 .searchSection input {
   width: 100%;
-  max-width: 500px;
+  max-width: 40rem;
   padding: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: white;
   color: black;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
+.searchSection input:focus {
+  border-color: #0071ce;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 113, 206, 0.5);
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: #0071ce;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #005bb5;
 }
 
 .resultsSection {
@@ -73,13 +84,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  margin-top: 20px;
 }
 
 .spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  /* White background circle */
-  border-top: 4px solid #3498db;
-  /* Blue spinner */
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #0071ce;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -94,4 +105,10 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.loadingSpinner p {
+  margin-top: 10px;
+  font-size: 1.1rem;
+  color: #555;
 }

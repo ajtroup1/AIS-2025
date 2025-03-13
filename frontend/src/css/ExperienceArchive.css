@@ -1,4 +1,5 @@
 .experienceArchive {
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,6 +7,21 @@
     box-sizing: border-box;
     background-color: white; /* Ensures a consistent white background */
     font-family: Arial, sans-serif;
+}
+
+.experienceActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.expArchHeaderText {
+    color: #333;
+    text-align: center;
+    margin-bottom: 0.75rem;
+    font-weight: bold;
+    margin-top: -4rem;
+    font-size: 2.5rem;
 }
 
 .searchBar {

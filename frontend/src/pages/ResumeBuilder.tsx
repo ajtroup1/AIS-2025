@@ -4,19 +4,18 @@ import Cookies from "js-cookie";
 
 const ResumeBuilder: React.FC = () => {
   const [jobDescription, setJobDescription] = useState<string>("");
-  const [isSearching, setIsSearching] = useState<boolean>(false)
+  const [resumeName, setResumeName] = useState<string>("");
+  const [isSearching, setIsSearching] = useState<boolean>(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJobDescription(e.target.value);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       setIsSearching(true);
       setTimeout(() => {
-        const results = [
-          "lll"
-        ];
+        const results = ["lll"];
         setIsSearching(false);
       }, 2000);
     }
@@ -38,12 +37,12 @@ const ResumeBuilder: React.FC = () => {
     if (response.status === 200) {
       alert(`Resume generated successfully at "${data.doc_url}"!`);
       setIsSearching(false);
-      return
+      return;
     }
 
-    alert(`Failed to generate resume: ${data.error}`)
+    alert(`Failed to generate resume: ${data.error}`);
     setIsSearching(false);
-  }
+  };
 
   return (
     <div className="container">
@@ -52,14 +51,25 @@ const ResumeBuilder: React.FC = () => {
           <h1>Resume Builder</h1>
 
           <div className="searchSection">
-            <label htmlFor="jobDescription">Enter Job Description: </label>
-            <input
+            <label htmlFor="jobDescription">Enter Job Description:</label>
+            <textarea
               id="jobDescription"
-              type="text"
               value={jobDescription}
               onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               placeholder="Paste the job description here and press Enter..."
+              rows={10} // Adjust the number of rows as needed
+            />
+          </div>
+
+          <div className="searchSection">
+            <label htmlFor="resumeName">Resume Name:</label>
+            <input
+              id="resumeName"
+              type="text"
+              placeholder="Enter the name of the resume..."
+              value={resumeName}
+              onChange={(e) => setResumeName(e.target.value)}
             />
           </div>
 
