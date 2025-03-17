@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, NavLink, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, NavLink, useNavigate } from "react-router-dom";
 import "../css/App.css";
 import ExperienceArchive from "./ExperienceArchive";
 import JobFinder from "./JobFinder";
@@ -9,8 +9,6 @@ import Cookies from "js-cookie";
 import Profile from "./Profile";
 import ResumeArchive from "./ResumeArchive";
 import ResumeBuilder from "./ResumeBuilder";
-import HomePage from "./HomePage";
-import Navbar from "../components/Navbar";
 
 const App: React.FC = () => {
   const navigate = useNavigate();
@@ -22,16 +20,29 @@ const App: React.FC = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
 
-
   useEffect(() => {
-    if (!isLoggedIn && Cookies.get("loggedIn") !== "true") {
-      navigate("/login");
-    }
-    if (Cookies.get("loggedIn") === "true") {
-      setIsLoggedIn(true);
-    }
-  }, [navigate, isLoggedIn]);
+    const checkLoginStatus = () => {
+      const loggedIn = Cookies.get("loggedIn") === "true";
+      const storedUsername = Cookies.get("username");
+      const storedAccessToken = Cookies.get("accessToken");
+      const storedRefreshToken = Cookies.get("refreshToken");
 
+      if (loggedIn && storedUsername && storedAccessToken && storedRefreshToken) {
+        setIsLoggedIn(true);
+        setUsername(storedUsername);
+        setAccessToken(storedAccessToken);
+        setRefreshToken(storedRefreshToken);
+      } else {
+        setIsLoggedIn(false);
+        setUsername("");
+        setAccessToken("");
+        setRefreshToken("");
+        navigate("/login");
+      }
+    };
+
+    checkLoginStatus();
+  }, [navigate]);
 
   const handleLogin = async (username: string, password: string) => {
     // Call the API to log in the user
@@ -87,31 +98,41 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
-      { }
       {isLoggedIn && (
-        <Navbar onLogout={handleLogout} />
+        <header className="navbar">
+          <nav className="nav-links">
+            <NavLink to="/"><button>Home Page</button></NavLink>
+            <NavLink to="/experience"><button>Experience Archive</button></NavLink>
+            <NavLink to="/job-finder"><button>Job Finder</button></NavLink>
+            <NavLink to="/application-tracker"><button>Application Tracker</button></NavLink>
+            <NavLink to="/resume-archive"><button>Resume Archive</button></NavLink>
+            <NavLink to="/resume-builder"><button>Resume Builder</button></NavLink>
+            <NavLink to="/profile"><button>My Profile</button></NavLink>
+            <NavLink to="/login" onClick={handleLogout}><button>Logout</button></NavLink>
+          </nav>
+        </header>
       )}
 
       <main className="content">
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/experience" element={<ExperienceArchive experiences={experiences} setExperiences={setExperiences} />} />
-          <Route path="/job-finder" element={<JobFinder />} />
-          <Route path="/application-tracker" element={<ApplicationTracker applications={applications} setApplications={setApplications} />} />
-          { }
-          <Route
-            path="/login"
-            element={
-              isLoggedIn ? (
-                <Navigate to="/" />
-              ) : (
-                <LoginPage onLogin={handleLogin} />
-              )
-            }
-          />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/resume-archive" element={<ResumeArchive />} />
-          <Route path="/resume-builder" element={<ResumeBuilder />} />
+          <Route path="/" element={
+            isLoggedIn ? (
+              <div>
+                <h1>Welcome to My Home Page!</h1>
+                <p>This is the home page content.</p>
+                <p>Welcome, User {username}!</p>
+              </div>
+            ) : (
+              <LoginPage onLogin={handleLogin} />
+            )
+          } />
+          <Route path="/experience" element={isLoggedIn ? <ExperienceArchive experiences={experiences} setExperiences={setExperiences} /> : <LoginPage onLogin={handleLogin} />} />
+          <Route path="/job-finder" element={isLoggedIn ? <JobFinder /> : <LoginPage onLogin={handleLogin} />} />
+          <Route path="/application-tracker" element={isLoggedIn ? <ApplicationTracker applications={applications} setApplications={setApplications} /> : <LoginPage onLogin={handleLogin} />} />
+          <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+          <Route path="/profile" element={isLoggedIn ? <Profile /> : <LoginPage onLogin={handleLogin} />} />
+          <Route path="/resume-archive" element={isLoggedIn ? <ResumeArchive /> : <LoginPage onLogin={handleLogin} />} />
+          <Route path="/resume-builder" element={isLoggedIn ? <ResumeBuilder /> : <LoginPage onLogin={handleLogin} />} />
         </Routes>
       </main>
     </div>

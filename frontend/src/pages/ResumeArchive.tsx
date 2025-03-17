@@ -4,19 +4,19 @@ import "../css/ResumeArchive.css";
 type ResumeEntry = {
   id: number;
   year: number;
-  resumeFile: File | null;  // Changed from resumeText to resumeFile
+  resumeFile: File | null;
 };
 
 const ResumeArchive: React.FC = () => {
   const [resumes, setResumes] = useState<ResumeEntry[]>([]);
-  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [resumeFile, setResumeFile] = useState<File | null>(null); // New state for file input
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [resumeYear, setResumeYear] = useState<number>(new Date().getFullYear());
   const [editResumeId, setEditResumeId] = useState<number | null>(null);
 
-  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedYear(parseInt(e.target.value, 10));
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
   const handleResumeFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +69,26 @@ const ResumeArchive: React.FC = () => {
     setResumes(resumes.filter((resume) => resume.id !== id));
   };
 
-  const filteredResumes = resumes.filter((resume) => resume.year === selectedYear);
+  const handleDownloadResume = (resume: ResumeEntry) => {
+    if (resume.resumeFile) {
+      const url = URL.createObjectURL(resume.resumeFile);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = resume.resumeFile.name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const filteredResumes = resumes.filter((resume) => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      resume.year.toString().includes(searchLower) ||
+      (resume.resumeFile && resume.resumeFile.name.toLowerCase().includes(searchLower))
+    );
+  });
 
   return (
     <div className="container">
@@ -78,14 +97,14 @@ const ResumeArchive: React.FC = () => {
           <h1>Resume Archive</h1>
 
           <div className="controls">
-            <label htmlFor="yearSelect">Select Year: </label>
-            <select id="yearSelect" value={selectedYear} onChange={handleYearChange}>
-              {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
+            <div className="searchBar">
+              <input
+                type="text"
+                placeholder="Search by year or filename..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+            </div>
             <button onClick={() => setIsAddModalOpen(true)}>Add Resume</button>
           </div>
 
@@ -102,9 +121,16 @@ const ResumeArchive: React.FC = () => {
                 <tr key={resume.id}>
                   <td>{resume.year}</td>
                   <td>{resume.resumeFile ? resume.resumeFile.name : "No file uploaded"}</td>
-                  <td>
-                    <button onClick={() => handleEditResume(resume.id)}>Edit</button>
-                    <button onClick={() => handleDeleteResume(resume.id)}>Delete</button>
+                  <td className="actionButtons">
+                    <button onClick={() => handleDownloadResume(resume)} className="downloadButton">
+                      Download
+                    </button>
+                    <button onClick={() => handleEditResume(resume.id)} className="editButton">
+                      Edit
+                    </button>
+                    <button onClick={() => handleDeleteResume(resume.id)} className="deleteButton">
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
