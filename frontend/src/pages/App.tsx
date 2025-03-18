@@ -9,6 +9,8 @@ import Cookies from "js-cookie";
 import Profile from "./Profile";
 import ResumeArchive from "./ResumeArchive";
 import ResumeBuilder from "./ResumeBuilder";
+import Navbar from "../components/Navbar";
+import HomePage from "./HomePage";
 
 const App: React.FC = () => {
   const navigate = useNavigate();
@@ -99,29 +101,14 @@ const App: React.FC = () => {
   return (
     <div className="container">
       {isLoggedIn && (
-        <header className="navbar">
-          <nav className="nav-links">
-            <NavLink to="/"><button>Home Page</button></NavLink>
-            <NavLink to="/experience"><button>Experience Archive</button></NavLink>
-            <NavLink to="/job-finder"><button>Job Finder</button></NavLink>
-            <NavLink to="/application-tracker"><button>Application Tracker</button></NavLink>
-            <NavLink to="/resume-archive"><button>Resume Archive</button></NavLink>
-            <NavLink to="/resume-builder"><button>Resume Builder</button></NavLink>
-            <NavLink to="/profile"><button>My Profile</button></NavLink>
-            <NavLink to="/login" onClick={handleLogout}><button>Logout</button></NavLink>
-          </nav>
-        </header>
+        <Navbar onLogout={handleLogout} />
       )}
 
       <main className="content">
         <Routes>
           <Route path="/" element={
             isLoggedIn ? (
-              <div>
-                <h1>Welcome to My Home Page!</h1>
-                <p>This is the home page content.</p>
-                <p>Welcome, User {username}!</p>
-              </div>
+              <HomePage />
             ) : (
               <LoginPage onLogin={handleLogin} />
             )
