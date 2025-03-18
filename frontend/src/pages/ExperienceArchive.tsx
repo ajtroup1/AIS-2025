@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../css/ExperienceArchive.css";
 import Sidebar from "./Sidebar";
 import Cookies from "js-cookie";
+import SkillInput from "../components/InputSkills";
 
 interface ExperienceArchiveProps {
   // Data
@@ -23,6 +24,7 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
     toDate: "",
     location: "",
     desription: "",
+    skills: [],
     userId: 0,
   });
   const [resumeFile, setResumeFile] = useState<File | null>(null);
@@ -55,6 +57,7 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
             desription: entry.description,
             location: entry.location,
             userId: entry.user,
+            skills: entry.skills
           }
           normalized.push(obj);
         });
@@ -85,7 +88,8 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
       toDate: "",
       location: "",
       desription: "",
-      userId: 0,
+      skills: [],
+      userId: 0
     });
   };
 
@@ -156,6 +160,7 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
       to_date: formatDateTime(newEntry.toDate),
       location: newEntry.location,
       description: newEntry.desription,
+      skills: newEntry.skills,
       user: Cookies.get("userId"),
     }
     const response = await fetch("http://127.0.0.1:8000/api/create-experience/",
@@ -344,7 +349,7 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
               onChange={(e) => setNewEntry({ ...newEntry, company: e.target.value })}
             />
             <label>Job Type:</label>
-            <select
+            <select className="option-dropdown"
               value={newEntry.jobType}
               onChange={(e) => setNewEntry({ ...newEntry, jobType: e.target.value as "Internship" | "Co-op" | "Full-Time" | "Part-Time" | "Program" })}
             >
@@ -372,6 +377,8 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
               value={newEntry.location}
               onChange={(e) => setNewEntry({ ...newEntry, location: e.target.value })}
             />
+            <label>Skills:</label>
+            <SkillInput/>
             <label>Description:</label>
             <input
               type="text"

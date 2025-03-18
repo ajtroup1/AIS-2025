@@ -16,6 +16,7 @@ type Experience = {
   toDate: string;
   location: string;
   desription: string;
+  skills: string[];
   userId: number;
   user?: User;
 }

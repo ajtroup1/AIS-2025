@@ -123,13 +123,13 @@ def generate_resume(access_token, position):
     doc = Document()
     # add heading
     # Title (Name)
-    doc.add_heading(f"{profile.get("full_name")}",level=1)
+    doc.add_heading(f"{profile.get('full_name')}",level=1)
     # Contact Information (Email, phone, linkedIn)
-    doc.add_paragraph(f"Email: {profile.get("email")} | Phone: {profile.get("phone")}\nLinkedIn: {profile.get("linkedin")}\nWebsite: {profile.get("website")}")
+    doc.add_paragraph(f"Email: {profile.get('email')} | Phone: {profile.get('phone')}\nLinkedIn: {profile.get('linkedin')}\nWebsite: {profile.get('website')}")
     # Eduction Section
     doc.add_heading('Education',level=2)
     edu = doc.add_paragraph()
-    edu.add_run(f"{profile.get("latest_edu_name")}\n").bold = True
+    edu.add_run(f"{profile.get('latest_edu_name')}\n").bold = True
 
     
     edu_from_date = profile.get('latest_edu_from_date')
@@ -143,7 +143,7 @@ def generate_resume(access_token, position):
     
     edu.add_run(f"{edu_from_date} - {edu_to_date}").italic = True
 
-    edu.add_run(f"\n{profile.get("latest_edu_desc")}\n")
+    edu.add_run(f"\n{profile.get('latest_edu_desc')}\n")
     # Working Experience Section
     doc.add_heading('Working Experiences', level=2)
     for i in sorted_by_date:
