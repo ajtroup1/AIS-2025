@@ -83,6 +83,12 @@
 
 .experienceTable tr:hover {
     background-color: #f1f1f1;
+    color: black;
+}
+
+.experienceTable tr {
+    background-color: white;
+    color: black;
 }
 
 .experienceTable td button {

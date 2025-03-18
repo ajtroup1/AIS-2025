@@ -115,6 +115,8 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
       return;
     }
 
+    console.log(newEntry);
+
     let data;
     if (newEntry.id === 0) {
       data = await APISaveExperience();
@@ -128,6 +130,8 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
     }
 
     newEntry.id = data.id;
+
+    console.log(newEntry);
 
     const updatedEntries = experiences.some(exp => exp.id === newEntry.id)
       ? experiences.map(exp => (exp.id === newEntry.id ? newEntry : exp))
@@ -145,13 +149,15 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
     const payload = {
       job_title: newEntry.title,
       company: newEntry.company,
-      from_date: formatDateTime(newEntry.fromDate),
-      to_date: formatDateTime(newEntry.toDate),
+      job_type: newEntry.jobType,
+      from_date: newEntry.fromDate,
+      to_date: newEntry.toDate,
       location: newEntry.location,
       description: newEntry.desription,
       skills: newEntry.skills,
       user: Cookies.get("userId"),
     };
+    console.log("api", payload)
     const response = await apiRequest("http://127.0.0.1:8000/api/create-experience/", {
       method: "POST",
       headers: header,
@@ -160,6 +166,9 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
 
     if (response.ok) {
       return await response.json();
+    } else {
+      const data = await response.json();
+      console.log(data)
     }
 
     return null;
@@ -197,6 +206,7 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
       from_date: formatDateTime(newEntry.fromDate),
       to_date: formatDateTime(newEntry.toDate),
       location: newEntry.location,
+      skills: newEntry.skills,
       description: newEntry.desription,
       user: Cookies.get("userId"),
     };
@@ -332,8 +342,8 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
             >
               <option value="Internship">Internship</option>
               <option value="Co-op">Co-op</option>
-              <option value="Full-Time">Full-Time</option>
-              <option value="Part-Time">Part-Time</option>
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
               <option value="Program">Program</option>
             </select>
             <label>From (YYYY-MM-DD):</label>
@@ -355,7 +365,10 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
               onChange={(e) => setNewEntry({ ...newEntry, location: e.target.value })}
             />
             <label>Skills:</label>
-            <SkillInput/>
+            <SkillInput
+              value={newEntry.skills}
+              onChange={(skills) => setNewEntry({ ...newEntry, skills })}
+            />
             <label>Description:</label>
             <input
               type="text"
