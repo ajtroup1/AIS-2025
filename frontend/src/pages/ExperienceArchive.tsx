@@ -260,7 +260,6 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
 
   return (
     <div className="experienceArchive">
-
       <p className="expArchHeaderText">Experience Archive</p>
       <div className="searchBar">
         <input
