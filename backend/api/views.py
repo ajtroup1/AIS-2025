@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view, permission_classes
 from .resume_builder import generate_resume
 import os
 from django.conf import settings
+import time
 
 # USER / AUTH
 @api_view(["GET"])
@@ -125,6 +126,9 @@ class GenerateResume(APIView):
 
     def post(self, request):
         position = request.data.get("position")
+        name = request.data.get("name")
+        if not name:
+            name = time.strftime("%Y-%m-%d_%H-%M-%S")
         if not position:
             return Response({"error": "Position is required"}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -138,10 +142,10 @@ class GenerateResume(APIView):
             return Response({"error": "Invalid authorization header format"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Assuming generate_resume creates a Document object
-        doc = generate_resume(access_token=token, position=position)
+        doc = generate_resume(access_token=token, position=position, path=f"{name}.docx")
         
         # Save the document to a file (or cloud storage)
-        doc_path = os.path.join(settings.MEDIA_ROOT, "resumes", f"{request.user.id}_resume.docx")
+        doc_path = os.path.join(settings.MEDIA_ROOT, "resumes", f"{request.user.id}_{name}.docx")
  
         # Assuming `doc.save` saves the document to the given path (this depends on the library you're using)
         doc.save(doc_path)
@@ -149,9 +153,9 @@ class GenerateResume(APIView):
         doc_path = os.path.abspath(doc_path)
 
         # Return the file URL (could be a local URL or public URL if uploaded to cloud storage)
-        file_url = os.path.join(settings.MEDIA_URL, "resumes", f"{request.user.id}_resume.docx")
+        file_url = os.path.join(settings.MEDIA_URL, f"{name}.docx")
         
-        return Response({"doc_url": doc_path}, status=status.HTTP_200_OK)
+        return Response({"doc_url": file_url}, status=status.HTTP_200_OK)
 
         
 class Ping(APIView):

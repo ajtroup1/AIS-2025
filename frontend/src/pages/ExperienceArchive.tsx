@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import "../css/ExperienceArchive.css";
 import Sidebar from "./Sidebar";
 import Cookies from "js-cookie";
+import { useApi } from "../hooks/useApi";
 
 interface ExperienceArchiveProps {
-  // Data
   experiences: Experience[];
-  // Handlers
   setExperiences: (experiences: Experience[]) => void;
 }
 
@@ -26,24 +25,22 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
     userId: 0,
   });
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const { apiRequest } = useApi();
 
   useEffect(() => {
     const fetchExperiences = async () => {
       const header = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${Cookies.get("accessToken")}`,
-      }
-      const response = await fetch("http://127.0.0.1:8000/api/experiences/",
-        {
-          method: "GET",
-          headers: header,
-        }
-      );
+      };
+      const response = await apiRequest("http://127.0.0.1:8000/api/experiences/", {
+        method: "GET",
+        headers: header,
+      });
 
       if (response.ok) {
         const data = await response.json();
         const normalized: Experience[] = [];
-        // Modify the data to match the Experience type
         data.map((entry: any) => {
           const obj: Experience = {
             id: entry.id,
@@ -55,20 +52,19 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
             desription: entry.description,
             location: entry.location,
             userId: entry.user,
-          }
+          };
           normalized.push(obj);
         });
-        // console.log(data)
         setExperiences(normalized);
       } else {
         alert("Failed to fetch experiences.");
       }
-    }
+    };
+
     if (experiences.length < 1) {
-      // Fetch experiences from the API
-      fetchExperiences()
+      fetchExperiences();
     }
-  }, []);
+  }, [experiences, setExperiences, apiRequest]);
 
   const handleSearch = () => {
     console.log("Search term:", searchTerm);
@@ -95,16 +91,13 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
       return;
     }
 
-    // Regular expression for validating the YYYY-MM-DD format
     const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
-    // Ensure the "from" and "to" dates are in the correct format (YYYY-MM-DD)
     if (!datePattern.test(newEntry.fromDate) || !datePattern.test(newEntry.toDate)) {
       alert("Please enter the dates in 'YYYY-MM-DD' format.");
       return;
     }
 
-    // Ensure the dates are valid
     const fromDate = new Date(newEntry.fromDate);
     const toDate = new Date(newEntry.toDate);
 
@@ -113,7 +106,6 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
       return;
     }
 
-    // Ensure the "from" date is before the "to" date
     if (fromDate > toDate) {
       alert("The 'from' date must be before the 'to' date.");
       return;
@@ -121,10 +113,8 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
 
     let data;
     if (newEntry.id === 0) {
-      // Add new experience
       data = await APISaveExperience();
     } else {
-      // Edit existing experience
       data = await APIEditExperience(newEntry.id);
     }
 
@@ -143,12 +133,11 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
     setIsExperienceModalOpen(false);
   };
 
-
   const APISaveExperience = async () => {
     const header = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${Cookies.get("accessToken")}`,
-    }
+    };
     const payload = {
       job_title: newEntry.title,
       company: newEntry.company,
@@ -157,37 +146,34 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
       location: newEntry.location,
       description: newEntry.desription,
       user: Cookies.get("userId"),
-    }
-    const response = await fetch("http://127.0.0.1:8000/api/create-experience/",
-      {
-        method: "POST",
-        headers: header,
-        body: JSON.stringify(payload),
-      }
-    );
+    };
+    const response = await apiRequest("http://127.0.0.1:8000/api/create-experience/", {
+      method: "POST",
+      headers: header,
+      body: JSON.stringify(payload),
+    });
 
     if (response.ok) {
       return await response.json();
     }
 
     return null;
-  }
+  };
 
   const formatDateTime = (date: string) => {
-    return new Date(date).toISOString(); // YYYY-MM-DDTHH:MM:SS.sssZ
+    return new Date(date).toISOString();
   };
 
   const normalizeDateTime = (date: string) => {
     return new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",  // "2023"
-      month: "short",   // "Aug"
-      day: "2-digit",   // "01"
-      timeZone: "UTC",  // "UTC"
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+      timeZone: "UTC",
     });
-  }
+  };
 
   const handleEdit = async (id: number) => {
-    // Update the state
     const entryToEdit = experiences.find((entry) => entry.id === id);
     if (entryToEdit) {
       setNewEntry(entryToEdit);
@@ -209,7 +195,7 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
       description: newEntry.desription,
       user: Cookies.get("userId"),
     };
-    const response = await fetch(`http://127.0.0.1:8000/api/update-experience/${id}/`, {
+    const response = await apiRequest(`http://127.0.0.1:8000/api/edit-experience/${id}/`, {
       method: "PUT",
       headers: header,
       body: JSON.stringify(payload),
@@ -222,16 +208,13 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
     return null;
   };
 
-
   const handleDelete = async (id: number) => {
-    // Delete the entry from the API
     const err = await APIDeleteExperience(id);
     if (err !== null) {
       alert(`Failed to delete experience: ${err}`);
       return;
     }
 
-    // Update state
     const updatedEntries = experiences.filter((entry) => entry.id !== id);
     setExperiences(updatedEntries);
   };
@@ -240,13 +223,11 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
     const header = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${Cookies.get("accessToken")}`,
-    }
-    const response = await fetch(`http://127.0.0.1:8000/api/delete-experience/${id}/`,
-      {
-        method: "DELETE",
-        headers: header,
-      }
-    );
+    };
+    const response = await apiRequest(`http://127.0.0.1:8000/api/delete-experience/${id}/`, {
+      method: "DELETE",
+      headers: header,
+    });
 
     if (response.ok) {
       return null;
@@ -254,7 +235,7 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
 
     const data = await response.json();
     return data.detail;
-  }
+  };
 
   const handleUploadResume = () => {
     setIsResumeModalOpen(true);
@@ -279,7 +260,6 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
 
   return (
     <div className="experienceArchive">
-      <Sidebar onUploadResume={handleUploadResume} onEditExperiences={handleAddNew} />
 
       <p className="expArchHeaderText">Experience Archive</p>
       <div className="searchBar">
@@ -313,9 +293,7 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
               <td>{entry.jobType}</td>
               <td>{entry.location}</td>
               <td>{entry.desription}</td>
-              {/* TODO: maybe alter the format of the date display here? */}
               <td><em>{normalizeDateTime(entry.fromDate)}</em> → <em>{normalizeDateTime(entry.toDate)}</em></td>
-              {/* <td>{entry.fromDate} → {entry.toDate}</td> */}
               <td>
                 <div className="experienceActions">
                   <button onClick={() => handleEdit(entry.id)}>Edit</button>
