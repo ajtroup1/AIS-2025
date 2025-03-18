@@ -4,18 +4,19 @@ import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faPhone, faGlobe, faGraduationCap } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { useApi } from "../hooks/useApi";
 
 const Profile: React.FC = () => {
+  const { apiRequest } = useApi();
   const [user, setUser] = useState({} as any);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const response = await fetch(`http://127.0.0.1:8000/api/profiles/${Cookies.get("userId")}/`, {
+      const response = await apiRequest(`http://127.0.0.1:8000/api/profiles/${Cookies.get("userId")}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${Cookies.get("accessToken")}`,
         },
       });
       const data = await response.json();

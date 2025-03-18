@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "../css/ResumeBuilder.css";
 import Cookies from "js-cookie";
+import { useApi } from "../hooks/useApi";
 
 const ResumeBuilder: React.FC = () => {
+  const { apiRequest } = useApi();
   const [jobDescription, setJobDescription] = useState<string>("");
   const [resumeName, setResumeName] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -23,14 +25,17 @@ const ResumeBuilder: React.FC = () => {
 
   const handleGenResume = async () => {
     setIsSearching(true);
-    const response = await fetch("http://127.0.0.1:8000/api/generate-resume/", {
+    const response = await apiRequest("http://127.0.0.1:8000/api/generate-resume/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${Cookies.get("accessToken")}`,
+        Authorization: `Bearer ${Cookies.get("accessToken")}`,
       },
-      body: JSON.stringify({ position: jobDescription }),
-    });
+      body: JSON.stringify({
+        position: jobDescription,
+        name: resumeName,
+      }),
+    })
 
     const data = await response.json();
 

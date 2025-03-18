@@ -17,7 +17,7 @@ from datetime import datetime
 # else:
 #     print(f"Login failed: {mockLoginResponse.status_code}, {mockLoginResponse.text}")
 
-def generate_resume(access_token, position):
+def generate_resume(access_token, position, path):
     getExperiencesURL = "http://127.0.0.1:8000/api/experiences/"
     getProfilesURL = "http://127.0.0.1:8000/api/profiles/"
     # Get All Profile
@@ -157,5 +157,5 @@ def generate_resume(access_token, position):
         for x in range(1,len(skillList)):
             skill.add_run(f", {skillList[x]}")
 
-    doc.save("resume.docx")
+    doc.save(path)
     return doc

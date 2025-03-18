@@ -5,7 +5,7 @@
   /* Consistent white background */
   min-height: 100vh;
   font-family: Arial, sans-serif;
-
+  margin-top: -5vh;
 }
 
 h1 {

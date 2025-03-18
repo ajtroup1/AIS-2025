@@ -5,7 +5,8 @@
     align-items: center;
     justify-content: flex-grow;
     box-sizing: border-box;
-    background-color: white; /* Ensures a consistent white background */
+    background-color: white;
+    /* Ensures a consistent white background */
     font-family: Arial, sans-serif;
 }
 
@@ -201,6 +202,7 @@
         opacity: 0;
         transform: scale(0.9);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -241,9 +243,9 @@
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
-  }
-  
-  .actionButtons button {
+}
+
+.actionButtons button {
     padding: 10px;
     background-color: #007bff;
     color: white;
@@ -251,9 +253,9 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  .actionButtons button:hover {
+}
+
+.actionButtons button:hover {
     background-color: #0056b3;
   }
 
