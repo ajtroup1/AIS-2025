@@ -140,12 +140,21 @@ class GenerateResume(APIView):
         token = auth_header.split(" ")[1] if len(auth_header.split()) == 2 else None
         if not token:
             return Response({"error": "Invalid authorization header format"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Ensure the user has a profile
+        profile = Profile.objects.filter(user=request.user).first()
+
+        if not profile:
+            return Response({"error": "You must fill out the profile section to generate a resume"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Save the document to a file (or cloud storage)
         doc_path = os.path.join(settings.MEDIA_ROOT, "resumes", f"{name}.docx")
         # Assuming generate_resume creates a Document object
 
         doc = generate_resume(access_token=token, position=position, path=doc_path)
+
+        if not doc:
+            return Response({"error": "Failed to pull profile."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
  
         # Assuming `doc.save` saves the document to the given path (this depends on the library you're using)
         doc.save(doc_path)

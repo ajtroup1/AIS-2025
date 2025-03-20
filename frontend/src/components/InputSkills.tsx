@@ -2,31 +2,32 @@ import React, { useState } from 'react';
 
 interface SkillInputProps {
   initialSkills?: string[];
+  value: string[];
+  onChange: (skills: string[]) => void;
 }
 
-const SkillInput: React.FC<SkillInputProps> = ({ initialSkills = [] }) => {
+const SkillInput: React.FC<SkillInputProps> = ({ initialSkills = [], value, onChange }) => {
   const [skill, setSkill] = useState<string>('');
-  const [skills, setSkills] = useState<string[]>(initialSkills);
 
   const handleAddSkill = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && skill.trim() !== '') {
-      setSkills((prevSkills) => [...prevSkills, skill.trim()]);
-      setSkill('');
+      const newSkills = [...value, skill.trim()];
+      onChange(newSkills); // Update parent with new skills
+      setSkill(''); // Clear input
     }
   };
 
   const handleRemoveSkill = (skillToRemove: string) => {
-    setSkills(skills.filter((s) => s !== skillToRemove));
+    const updatedSkills = value.filter((s) => s !== skillToRemove);
+    onChange(updatedSkills);
   };
 
   return (
     <div>
       <div className='skills-container'>
-        {skills.map((skill, index) => (
+        {value.map((skill, index) => (
           <span key={index} className='skill-container'>
-            <span className='skill-tag'>
-                {skill}
-            </span>
+            <span className='skill-tag'>{skill}</span>
             <div className='skill-remove' onClick={() => handleRemoveSkill(skill)}>x</div>
           </span>
         ))}

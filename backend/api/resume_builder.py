@@ -35,8 +35,14 @@ def generate_resume(access_token, position, path):
     else:
         print(f"Error: {getExperiencesResponse.status_code}, {getExperiencesResponse.text}")
 
+    print(type(getProfilesResponse), getProfilesResponse, getProfilesResponse.status_code, getProfilesResponse.json())
+    profile = None
     if getProfilesResponse.status_code == 200:
-        profile = getProfilesResponse.json()[0]
+        if len(getProfilesResponse.json()) > 0:
+            profile = getProfilesResponse.json()[0]
+        else:
+            # Create a new profile
+            return None
     else:
         print(f"Error: {getExperiencesResponse.status_code}, {getExperiencesResponse.text}")
 
