@@ -141,11 +141,11 @@ class GenerateResume(APIView):
         if not token:
             return Response({"error": "Invalid authorization header format"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Assuming generate_resume creates a Document object
-        doc = generate_resume(access_token=token, position=position, path=f"{name}.docx")
-        
         # Save the document to a file (or cloud storage)
-        doc_path = os.path.join(settings.MEDIA_ROOT, "resumes", f"{request.user.id}_{name}.docx")
+        doc_path = os.path.join(settings.MEDIA_ROOT, "resumes", f"{name}.docx")
+        # Assuming generate_resume creates a Document object
+
+        doc = generate_resume(access_token=token, position=position, path=doc_path)
  
         # Assuming `doc.save` saves the document to the given path (this depends on the library you're using)
         doc.save(doc_path)
