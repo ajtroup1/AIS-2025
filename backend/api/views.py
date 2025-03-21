@@ -89,9 +89,8 @@ class UpdateUser(APIView):
         
         username = request.data["username"]
         email = request.data["email"]
-
         User.objects.update(username=username, email=email)
-        return Response({"message": "Profile updated successfully"}, status=status.HTTP_200_OK)
+        return Response({"message": "User account credentials updated successfully"}, status=status.HTTP_200_OK)
     
 class DeleteUser(APIView):
     permission_classes = [IsAuthenticated]
@@ -99,7 +98,7 @@ class DeleteUser(APIView):
     def delete(self, request):
         user = request.user
         user.delete()
-        return Response({"message": "Profile deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "User account deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
     
 class GetAllUsers(APIView):
     def get(self, request):
@@ -112,13 +111,60 @@ class GetCurrentUser(APIView):
 
     def get(self, request):
         user = request.user
-        found = User.objects.filter(id=user.id).exists()
-        if not found:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         # Serialize the user data if found
         serializer = RegisterSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+# class GetAllProfiles(APIView):
+#     permission_classes=[IsAuthenticated]
+
+#     def get(self, request):
+#         profiles = Profile.objects.all()
+#         serializer = ProfileSerializer(profiles, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+
+# class GetProfileByUserId(APIView):
+#     permission_classes=[IsAuthenticated]
+
+#     def get(self, request):
+#         user = request.user
+#         profile = Profile.objects.filter(user=user.id)
+#         serializer = ProfileSerializer(profile)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+
+# class CreateProfile(APIView):
+#     permission_classes=[IsAuthenticated]
+#     def post(self, request):
+#         # Check if user already has a profile
+#         if Profile.objects.filter(user=request.user).exists():
+#             return Response({"error": "Profile already exists"}, status=status.HTTP_400_BAD_REQUEST)
+#         serializer = ProfileSerializer(data=request.data, context={'request': request})
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# class UpdateProfile (APIView):
+#     permission_classes = [IsAuthenticated]
+#     def put(self, request):
+#         if not (Profile.objects.filter(user=request.user).exists()):
+#             return Response({"error": "User has no profile"}, status=status.HTTP_400_BAD_REQUEST)
+#         serializer = ProfileSerializer(data=request.data, context={'request': request})
+#         # Validate and save if data is correct
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response({"message": "Profile updated successfully", "data": serializer.data}, status=status.HTTP_200_OK)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# class DeleteProfile(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def delete(self, request):
+#         # Fetch the profile or return a 404 if not found
+#         profile = get_object_or_404(Profile, user=request.user)
+#         # Delete the profile
+#         profile.delete()
+#         return Response({"message": "Profile deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
     
 class RefreshTokenView(APIView):
     def post(self, request):
@@ -245,6 +291,7 @@ ProfileViews = create_api_views(Profile, ProfileSerializer)
 ResumeViews = create_api_views(Resume, ResumeSerializer)
 ExperienceViews = create_api_views(Experience, ExperienceSerializer)
 ApplicationViews = create_api_views(Application, ApplicationSerializer)
+
 
 # Assigning dynamically generated views to class names
 GetAllProfiles, GetProfileById, CreateProfile, UpdateProfile, DeleteProfile = ProfileViews

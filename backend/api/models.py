@@ -20,6 +20,7 @@ class Status(models.TextChoices):
 
 # Profile model:
 class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name="profile")
     full_name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     phone = models.CharField(max_length=12)
@@ -29,7 +30,9 @@ class Profile(models.Model):
     latest_edu_from_date = models.DateField()
     latest_edu_to_date = models.DateField()
     latest_edu_desc = models.TextField()
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")  # Using OneToOneField
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
 
 
 # Resume model:

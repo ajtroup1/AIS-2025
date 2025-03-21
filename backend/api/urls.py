@@ -17,7 +17,7 @@ urlpatterns = [
     path('profiles/<int:pk>/', GetProfileById.as_view(), name='get-profile-by-id'),
     path('create-profile/', CreateProfile.as_view(), name='create-profile'),
     path('update-profile/<int:pk>/', UpdateProfile.as_view(), name='update-profile'),
-
+    path('delete-profile/',DeleteProfile.as_view(), name='delete-profile'),
     # Resumes
     path('resumes/', GetAllResumes.as_view(), name='resumes'),
     path('resumes/<int:pk>/', GetResumeById.as_view(), name='get-resume-by-id'),
