@@ -107,7 +107,19 @@ class GetAllUsers(APIView):
         serializer = RegisterSerializer(users, many=True)
         return Response(serializer.data)
 
+class GetCurrentUser(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def get(self, request):
+        user = request.user
+        found = User.objects.filter(id=user.id).exists()
+        if not found:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        # Serialize the user data if found
+        serializer = RegisterSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    
 class RefreshTokenView(APIView):
     def post(self, request):
         refresh_token = request.data.get("refresh")
