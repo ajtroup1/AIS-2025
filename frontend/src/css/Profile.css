@@ -71,3 +71,43 @@
   font-weight: normal;
   color: #0071ce;
 }
+
+.profile-button-edit {
+  margin: 0.2rem;
+  border-radius: 0.5rem;
+}
+
+.profile-button-edit:hover {
+  background-color: rgb(18, 63, 122);
+}
+
+.profile-button-save {
+  margin: 0.2rem;
+  border-radius: 0.5rem;
+  background-color: green;
+  width: 5rem;
+  display: inline-block;
+}
+.profile-button-cancel {
+  margin: 0.2rem;
+  border-radius: 0.5rem;
+  background-color: red;
+  width: 5rem;
+  display: inline-block;
+}
+.profile-editing-buttons {
+  display:flex;
+  justify-content: center;
+}
+
+.profile-input-field:hover{
+  border-width: 1px;
+  border-color: rgb(27, 27, 73);
+  border-radius: 4px;
+  cursor: text;
+}
+.profile-input-field {
+  margin: 0.5rem;
+  padding-left: 3px;
+  color: black;
+}
