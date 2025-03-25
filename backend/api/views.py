@@ -106,6 +106,12 @@ class GetAllUsers(APIView):
         users = User.objects.all()
         serializer = RegisterSerializer(users, many=True)
         return Response(serializer.data)
+    
+class GetUserById(APIView):
+    def get(self, request, pk):
+        user = User.objects.get(pk=pk)
+        serializer = RegisterSerializer(user)
+        return Response(serializer.data)
 
 class GetCurrentUser(APIView):
     permission_classes = [IsAuthenticated]
@@ -230,9 +236,10 @@ class GenerateResume(APIView):
             user=request.user,
             created_at=timezone.now()
         )
-
-        resume.save()
-        
+ 
+ 
+        # Assuming `doc.save` saves the document to the given path (this depends on the library you're using)
+        doc.save(doc_path)        
         return Response({"doc_url": file_url}, status=status.HTTP_200_OK)
 
         
@@ -302,9 +309,11 @@ ProfileViews = create_api_views(Profile, ProfileSerializer)
 ResumeViews = create_api_views(Resume, ResumeSerializer)
 ExperienceViews = create_api_views(Experience, ExperienceSerializer)
 ApplicationViews = create_api_views(Application, ApplicationSerializer)
+UserViews = create_api_views(User, RegisterSerializer)
 
 
 # Assigning dynamically generated views to class names
+GetAllUsers, GetUserById, CreateUser, UpdateUser, DeleteUser = UserViews
 GetAllProfiles, GetProfileById, CreateProfile, UpdateProfile, DeleteProfile = ProfileViews
 GetAllResumes, GetResumeById, CreateResume, UpdateResume, DeleteResume = ResumeViews
 GetAllExperiences, GetExperienceById, CreateExperience, UpdateExperience, DeleteExperience = ExperienceViews
