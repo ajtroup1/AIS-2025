@@ -73,7 +73,7 @@ const Profile: React.FC = () => {
             body: JSON.stringify({
               user: parseInt(userId!),
               full_name: "Enter full name here",
-              email: user.email,
+              email: user.email ? user.email : "N/A",
               phone: "N/A",
               website: "N/A",
               linkedin: "N/A",
@@ -85,6 +85,8 @@ const Profile: React.FC = () => {
           });
           //if post call failed, throw error
           if (!createProfileResponse.ok) {
+            const data = await createProfileResponse.json()
+            console.log(data)
             throw new Error("Failed to create a profile");
           }
           // else, profile created & set profile with the newly created
