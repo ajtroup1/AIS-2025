@@ -1,19 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/ResumeArchive.css";
-
-type ResumeEntry = {
-  id: number;
-  year: number;
-  resumeFile: File | null;
-};
+import { useApi } from "../hooks/useApi";
+import Cookies from "js-cookie";
 
 const ResumeArchive: React.FC = () => {
-  const [resumes, setResumes] = useState<ResumeEntry[]>([]);
+  const { apiRequest } = useApi();
+  const [resumes, setResumes] = useState<Resume[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [resumeYear, setResumeYear] = useState<number>(new Date().getFullYear());
   const [editResumeId, setEditResumeId] = useState<number | null>(null);
+
+  const fetchResumes = async () => {
+    const response = await apiRequest("http://127.0.0.1:8000/api/resumes/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("accessToken")}`,
+      },
+    });
+
+    const data = await response.json();
+
+    if (response.status === 200) {
+      const fetchedResumes: Resume[] = data.map((resume: any) => ({
+        id: resume.id,
+        createdAt: resume.created_at,
+        filePath: resume.file_path,
+        name: resume.resume_name,
+        userId: resume.user_id,
+      }));
+      console.log(fetchedResumes);
+      setResumes(fetchedResumes);
+    }
+  };
+
+  useEffect(() => {
+    fetchResumes();
+  }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -37,15 +62,17 @@ const ResumeArchive: React.FC = () => {
 
     if (editResumeId !== null) {
       const updatedResumes = resumes.map((resume) =>
-        resume.id === editResumeId ? { ...resume, year: resumeYear, resumeFile } : resume
+        resume.id === editResumeId ? { ...resume, createdAt: resumeYear, name: resumeFile.name, filePath: resumeFile.webkitRelativePath } : resume
       );
       setResumes(updatedResumes);
       setEditResumeId(null);
     } else {
-      const newResume: ResumeEntry = {
+      const newResume: Resume = {
         id: resumes.length + 1,
-        year: resumeYear,
-        resumeFile: resumeFile,
+        createdAt: new Date().toISOString(),
+        name: resumeFile.name,
+        filePath: resumeFile.webkitRelativePath,
+        userId: 1,
       };
       setResumes([...resumes, newResume]);
     }
@@ -58,8 +85,9 @@ const ResumeArchive: React.FC = () => {
   const handleEditResume = (id: number) => {
     const resumeToEdit = resumes.find((resume) => resume.id === id);
     if (resumeToEdit) {
-      setResumeFile(resumeToEdit.resumeFile);
-      setResumeYear(resumeToEdit.year);
+      const f: File = new File([resumeToEdit.filePath], resumeToEdit.name, { type: "application/pdf" });
+      setResumeFile(f);
+      setResumeYear(new Date(resumeToEdit.createdAt).getFullYear());
       setEditResumeId(id);
       setIsAddModalOpen(true);
     }
@@ -69,24 +97,21 @@ const ResumeArchive: React.FC = () => {
     setResumes(resumes.filter((resume) => resume.id !== id));
   };
 
-  const handleDownloadResume = (resume: ResumeEntry) => {
-    if (resume.resumeFile) {
-      const url = URL.createObjectURL(resume.resumeFile);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = resume.resumeFile.name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
+  const handleDownloadResume = (resume: Resume) => {
+    const url = resume.filePath;
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = resume.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const filteredResumes = resumes.filter((resume) => {
     const searchLower = searchTerm.toLowerCase();
     return (
-      resume.year.toString().includes(searchLower) ||
-      (resume.resumeFile && resume.resumeFile.name.toLowerCase().includes(searchLower))
+      resume.createdAt.toString().includes(searchLower) ||
+      resume.name.toLowerCase().includes(searchLower)
     );
   });
 
@@ -112,15 +137,19 @@ const ResumeArchive: React.FC = () => {
             <thead>
               <tr>
                 <th>Year</th>
-                <th>Resume File</th>
+                <th>Resume Name</th>
+                <th>Full path</th>
+                <th>Created at</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredResumes.map((resume) => (
                 <tr key={resume.id}>
-                  <td>{resume.year}</td>
-                  <td>{resume.resumeFile ? resume.resumeFile.name : "No file uploaded"}</td>
+                  <td>{new Date(resume.createdAt).getFullYear()}</td>
+                  <td>{resume.name}</td>
+                  <td>{resume.filePath}</td>
+                  <td>{new Date(resume.createdAt).toLocaleDateString()}</td>
                   <td className="actionButtons">
                     <button onClick={() => handleDownloadResume(resume)} className="downloadButton">
                       Download

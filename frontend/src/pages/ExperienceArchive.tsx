@@ -252,10 +252,6 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
     return data.detail;
   };
 
-  const handleUploadResume = () => {
-    setIsResumeModalOpen(true);
-  };
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setResumeFile(e.target.files[0]);
@@ -322,61 +318,65 @@ const ExperienceArchive: React.FC<ExperienceArchiveProps> = ({ experiences, setE
       {isExperienceModalOpen && (
         <div className="modal">
           <div className="modalContent">
-            <h2>{newEntry.id === 0 ? "Add New Experience" : "Edit Experience"}</h2>
-            <label>Job Title:</label>
-            <input
-              type="text"
-              value={newEntry.title}
-              onChange={(e) => setNewEntry({ ...newEntry, title: e.target.value })}
-            />
-            <label>Firm:</label>
-            <input
-              type="text"
-              value={newEntry.company}
-              onChange={(e) => setNewEntry({ ...newEntry, company: e.target.value })}
-            />
-            <label>Job Type:</label>
-            <select className="option-dropdown"
-              value={newEntry.jobType}
-              onChange={(e) => setNewEntry({ ...newEntry, jobType: e.target.value as "Internship" | "Co-op" | "Full-Time" | "Part-Time" | "Program" })}
-            >
-              <option value="Internship">Internship</option>
-              <option value="Co-op">Co-op</option>
-              <option value="Full-time">Full-time</option>
-              <option value="Part-time">Part-time</option>
-              <option value="Program">Program</option>
-            </select>
-            <label>From (YYYY-MM-DD):</label>
-            <input
-              type="text"
-              value={newEntry.fromDate}
-              onChange={(e) => setNewEntry({ ...newEntry, fromDate: e.target.value })}
-            />
-            <label>To (YYYY-MM-DD):</label>
-            <input
-              type="text"
-              value={newEntry.toDate}
-              onChange={(e) => setNewEntry({ ...newEntry, toDate: e.target.value })}
-            />
-            <label>Location:</label>
-            <input
-              type="text"
-              value={newEntry.location}
-              onChange={(e) => setNewEntry({ ...newEntry, location: e.target.value })}
-            />
-            <label>Skills:</label>
-            <SkillInput
-              value={newEntry.skills}
-              onChange={(skills) => setNewEntry({ ...newEntry, skills })}
-            />
-            <label>Description:</label>
-            <input
-              type="text"
-              value={newEntry.desription}
-              onChange={(e) => setNewEntry({ ...newEntry, desription: e.target.value })}
-            />
-            <button onClick={handleSaveNewEntry}>Save</button>
-            <button onClick={() => setIsExperienceModalOpen(false)}>Cancel</button>
+            <div className="experienceContent">
+              <h2>{newEntry.id === 0 ? "Add New Experience" : "Edit Experience"}</h2>
+              <label>Job Title:</label>
+              <input
+                type="text"
+                value={newEntry.title}
+                onChange={(e) => setNewEntry({ ...newEntry, title: e.target.value })}
+              />
+              <label>Firm:</label>
+              <input
+                type="text"
+                value={newEntry.company}
+                onChange={(e) => setNewEntry({ ...newEntry, company: e.target.value })}
+              />
+              <label>Job Type:</label>
+              <select className="option-dropdown"
+                value={newEntry.jobType}
+                onChange={(e) => setNewEntry({ ...newEntry, jobType: e.target.value as "Internship" | "Co-op" | "Full-Time" | "Part-Time" | "Program" })}
+              >
+                <option value="Internship">Internship</option>
+                <option value="Co-op">Co-op</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Program">Program</option>
+              </select>
+              <label>From (YYYY-MM-DD):</label>
+              <input
+                type="text"
+                value={newEntry.fromDate}
+                onChange={(e) => setNewEntry({ ...newEntry, fromDate: e.target.value })}
+              />
+              <label>To (YYYY-MM-DD):</label>
+              <input
+                type="text"
+                value={newEntry.toDate}
+                onChange={(e) => setNewEntry({ ...newEntry, toDate: e.target.value })}
+              />
+              <label>Location:</label>
+              <input
+                type="text"
+                value={newEntry.location}
+                onChange={(e) => setNewEntry({ ...newEntry, location: e.target.value })}
+              />
+              <label>Skills:</label>
+              <SkillInput
+                value={newEntry.skills}
+                onChange={(skills) => setNewEntry({ ...newEntry, skills })}
+              />
+              <label>Description:</label>
+              <input
+                type="text"
+                value={newEntry.desription}
+                onChange={(e) => setNewEntry({ ...newEntry, desription: e.target.value })}
+              />
+            </div>
+            <div className="actions-container">
+              <button onClick={handleSaveNewEntry}>Save</button>
+              <button onClick={() => setIsExperienceModalOpen(false)}>Cancel</button>
+            </div>
           </div>
         </div>
       )}

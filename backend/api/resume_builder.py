@@ -162,5 +162,6 @@ def generate_resume(access_token, position, path):
         skill.add_run(f"{skillList[0]}")
         for x in range(1,len(skillList)):
             skill.add_run(f", {skillList[x]}")
+            
 
     return doc

@@ -11,6 +11,7 @@ from .resume_builder import generate_resume
 import os
 from django.conf import settings
 import time
+from django.utils import timezone
 
 # USER / AUTH
 @api_view(["GET"])
@@ -221,6 +222,16 @@ class GenerateResume(APIView):
 
         # Return the file URL (could be a local URL or public URL if uploaded to cloud storage)
         file_url = os.path.join(settings.MEDIA_URL, f"{name}.docx")
+
+        # Create the db instance for the resume
+        resume = Resume.objects.create(
+            file_path=file_url,
+            resume_name=name,
+            user=request.user,
+            created_at=timezone.now()
+        )
+
+        resume.save()
         
         return Response({"doc_url": file_url}, status=status.HTTP_200_OK)
 

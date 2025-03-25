@@ -25,12 +25,21 @@ type Application = {
   id: number;
   title: string;
   company: string;
-  status: "Application Sent" | "Interview" | "Offer" | "Application Rejected" | "Response";
+  status: "Application Sent" | "Interview" | "Offer" | "Rejected" | "Response";
   jobType: "Internship" | "Co-op" | "Full-Time" | "Part-Time" | "Program";
   location: string;
   submittedDate: DateTime;
   description: string;
   userId?: number;
   resumeId?: number | null;
+  user?: User;
+}
+
+type Resume = {
+  id: number;
+  filePath: string;
+  name: string;
+  createdAt: DateTime;
+  userId: number;
   user?: User;
 }

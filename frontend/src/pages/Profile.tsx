@@ -20,7 +20,7 @@ const Profile: React.FC = () => {
     "latest_edu_from_date": "",
     "latest_edu_to_date": "",
     "latest_edu_desc": ""
-});
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
 
@@ -42,16 +42,16 @@ const Profile: React.FC = () => {
         console.error("Error fetching user:", error);
       }
     };
-  
+
     const fetchProfile = async () => {
       try {
         const userId = Cookies.get("userId");
         const accessToken = Cookies.get("accessToken");
-  
+
         if (!userId || !accessToken) {
           throw new Error("Missing userId or accessToken.");
         }
-  
+
         const fetchProfileResponse = await apiRequest(`http://127.0.0.1:8000/api/profiles/${userId}/`, {
           method: "GET",
           headers: {
@@ -62,7 +62,7 @@ const Profile: React.FC = () => {
         // if status get call =404, create a profile
         if (fetchProfileResponse.status === 404) {
           console.warn("No profile found. Creating a new one...");
-  
+
           //post call
           const createProfileResponse = await apiRequest(`http://127.0.0.1:8000/api/create-profile/`, {
             method: "POST",
@@ -91,11 +91,11 @@ const Profile: React.FC = () => {
           console.log("Profile created successfully.");
           const createdData = await createProfileResponse.json();
           setProfile(createdData);
-        // if original get call succeeds, just set profile with the data fetched
+          // if original get call succeeds, just set profile with the data fetched
         } else if (fetchProfileResponse.ok) {
           const data = await fetchProfileResponse.json();
           setProfile(data);
-        // error get call different than 404, throw error
+          // error get call different than 404, throw error
         } else {
           throw new Error("Failed to fetch profile.");
         }
@@ -103,17 +103,17 @@ const Profile: React.FC = () => {
         console.error("Error fetching or creating profile:", error);
       }
     };
-  
+
     const fetchData = async () => {
       await fetchCurrentUser();
       await fetchProfile();
       setIsLoading(false);
     };
-  
+
     fetchData();
   }, []);
-  
-  
+
+
   //edit
   const handleEditProfile = async () => {
     setEditMode((prev) => !prev);
@@ -131,15 +131,15 @@ const Profile: React.FC = () => {
 
   const handleSave = async () => {
     console.log("Profile after edit: ", profile);
-  
+
     try {
       const userId = Cookies.get("userId");
       const accessToken = Cookies.get("accessToken");
-  
+
       if (!userId || !accessToken) {
         throw new Error("User ID or Access Token is missing");
       }
-  
+
       const response = await apiRequest(`http://127.0.0.1:8000/api/update-profile/${userId}/`, {
         method: "PUT",
         headers: {
@@ -148,7 +148,7 @@ const Profile: React.FC = () => {
         },
         body: JSON.stringify(profile),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error updating profile", errorData);
@@ -160,8 +160,8 @@ const Profile: React.FC = () => {
     } finally {
       handleEditProfile();
     }
-  };  
-  
+  };
+
 
 
   if (isLoading) {
@@ -176,30 +176,30 @@ const Profile: React.FC = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="profile-container">
       <h1 className="profile-header">Hello, {user.username}</h1>
       <div className="profile-info">
         <p><FontAwesomeIcon icon={faContactCard} />
-        <input className="profile-input-field"
-          type="text"
-          name="full_name"
-          value={profile.full_name || ''}
-          onChange={handleChange}
-          disabled={!editMode}
-          placeholder="Enter your full name"
-        /></p>
+          <input className="profile-input-field"
+            type="text"
+            name="full_name"
+            value={profile.full_name || ''}
+            onChange={handleChange}
+            disabled={!editMode}
+            placeholder="Enter your full name"
+          /></p>
         <p><FontAwesomeIcon icon={faEnvelope} /><a href={`mailto:${user.email}`}>{user.email}</a></p>
         <p><FontAwesomeIcon icon={faPhone} />
-        <input className="profile-input-field"
-          type="text"
-          name="phone"
-          value={profile.phone || ''}
-          onChange={handleChange}
-          disabled={!editMode}
-          placeholder="Enter your phone number"
-        /></p>
+          <input className="profile-input-field"
+            type="text"
+            name="phone"
+            value={profile.phone || ''}
+            onChange={handleChange}
+            disabled={!editMode}
+            placeholder="Enter your phone number"
+          /></p>
         <p><FontAwesomeIcon icon={faGlobe} /><a target="_blank" rel="noopener noreferrer">
           <input className="profile-input-field"
             type="text"
@@ -223,29 +223,29 @@ const Profile: React.FC = () => {
       <div className="profile-edu-info">
         <h2><FontAwesomeIcon icon={faGraduationCap} />Education</h2>
         <p style={{ fontWeight: 'bold' }}><input className="profile-input-field"
-            type="text"
-            name="latest_edu_name"
-            value={profile.latest_edu_name || ''}
-            onChange={handleChange}
-            disabled={!editMode}
-            placeholder="Enter your latest education"
-          /></p>
-          <p><p>Start Date: </p>
+          type="text"
+          name="latest_edu_name"
+          value={profile.latest_edu_name || ''}
+          onChange={handleChange}
+          disabled={!editMode}
+          placeholder="Enter your latest education"
+        /></p>
+        <p><p>Start Date: </p>
           <input className="profile-input-field"
             type="date"
             name="latest_edu_from_date"
             value={profile.latest_edu_from_date || ''}
             onChange={handleChange}
             disabled={!editMode}
-            placeholder="yyyy-mm-dd"/></p>
-          <p>
+            placeholder="yyyy-mm-dd" /></p>
+        <p>
           <p>End Date: </p><input className="profile-input-field"
             type="date"
             name="latest_edu_to_date"
             value={profile.latest_edu_to_date || ''}
             onChange={handleChange}
             disabled={!editMode}
-            placeholder="yyyy-mm-dd"/></p>
+            placeholder="yyyy-mm-dd" /></p>
 
         <p>Summary:</p>
         <textarea
@@ -259,17 +259,17 @@ const Profile: React.FC = () => {
           cols={50}  // Adjust the width
         ></textarea>
       </div>
-      {!editMode ? 
-      <div className="profile-buttons">
-        <button className="profile-button-edit" onClick={handleEditProfile}>Edit Profile</button>
-      </div> :
-      
-      <div className="profile-editing-buttons">
-        <button className="profile-button-save" onClick={handleSave}>Save</button>
-        <button className="profile-button-cancel" onClick={handleEditProfile}>Cancel</button>
-      </div>
-    }
-      
+      {!editMode ?
+        <div className="profile-buttons">
+          <button className="profile-button-edit" onClick={handleEditProfile}>Edit Profile</button>
+        </div> :
+
+        <div className="profile-editing-buttons">
+          <button className="profile-button-save" onClick={handleSave}>Save</button>
+          <button className="profile-button-cancel" onClick={handleEditProfile}>Cancel</button>
+        </div>
+      }
+
     </div>
   );
 };

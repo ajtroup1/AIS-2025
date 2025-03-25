@@ -181,10 +181,11 @@ const ApplicationTracker: React.FC<ApplicationTrackerProps> = ({ applications = 
       job_type: newApplication.jobType,
       location: newApplication.location,
       submitted_date: newApplication.submittedDate,
-      description: newApplication.description,
+      description: newApplication.description ? newApplication.description : " ",
       user: Cookies.get("userId"),
       resume_id: null,
     }
+    console.log(payload)
     const response = await fetch("http://127.0.0.1:8000/api/create-application/", {
       method: "POST",
       headers: header,
@@ -277,7 +278,7 @@ const ApplicationTracker: React.FC<ApplicationTrackerProps> = ({ applications = 
               <td>{app.submittedDate.toLocaleDateString}</td>
               <td>{app.status}</td>
               <td>{app.description}</td>
-              <td>
+              <td className="actionButtons">
                 <button className="edit" onClick={() => handleEditApplication(app.id)}>Edit</button>
                 <button className="delete" onClick={() => handleDeleteApplication(app.id)}>Delete</button>
               </td>
@@ -304,18 +305,20 @@ const ApplicationTracker: React.FC<ApplicationTrackerProps> = ({ applications = 
               onChange={(e) =>
                 setNewApplication({
                   ...newApplication,
-                  status: e.target.value as "Application Sent" | "Interview" | "Offer" | "Application Rejected" | "Response",
+                  status: e.target.value as "Application Sent" | "Interview" | "Offer" | "Rejected" | "Response",
                 })
               }
             >
               <option value="Application Sent">Applied</option>
-              <option value="Application Rejected">Interviewing</option>
+              <option value="Rejected">Interviewing</option>
               <option value="Offer">Offer</option>
               <option value="Interview">Rejected</option>
               <option value="Response">Response</option>
             </select>
-            <label>Notes:</label>
-            <textarea value={newApplication.description} onChange={(e) => setNewApplication({ ...newApplication, description: e.target.value })}></textarea>
+            <div className="notesSection">
+              <label>Notes:</label>
+              <textarea value={newApplication.description} onChange={(e) => setNewApplication({ ...newApplication, description: e.target.value })}></textarea>
+            </div>
             <button onClick={handleSaveApplication}>Save</button>
             <button onClick={() => setIsModalOpen(false)}>Cancel</button>
           </div>
